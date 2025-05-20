@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, Save, RotateCcw } from 'lucide-react';
+import { Database } from 'lucide-react';
 import DataTable from './DataTable';
 import StatusBadge from './StatusBadge';
 import { databaseUsers, backups, restores } from '../data/mockData';

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Info, Shield, AlertTriangle, Globe, Box, GitBranch } from 'lucide-react';
+import { Info, Shield, AlertTriangle, Globe, Box } from 'lucide-react';
 import Section from '../Section';
-import { Icon } from '../Icon';
 import { Application } from '../../types';
 
 interface ApplicationDetailsSectionProps {

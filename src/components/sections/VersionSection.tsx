@@ -1,4 +1,3 @@
-import React from 'react';
 import { GitBranch } from 'lucide-react';
 import Section from '../Section';
 import DataTable from '../DataTable';

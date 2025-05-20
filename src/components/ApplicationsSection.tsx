@@ -1,11 +1,11 @@
 import React from 'react';
-import { Users, GitBranch, AlertTriangle, Save, RotateCcw, Info, Shield, Globe, Box, Cloud, Tag, UserCircle, GitCommit, AlertOctagon, DollarSign, Activity, HardDrive, Clock, Key, FileSearch, AlertCircle, Timer, GitPullRequest } from 'lucide-react';
+import {  AlertTriangle, Save, RotateCcw, Info, Shield, Globe, Box, Cloud, Tag, UserCircle, GitCommit, AlertOctagon, Activity, HardDrive, FileSearch, AlertCircle, Timer, GitPullRequest } from 'lucide-react';
 import { Icon } from './Icon';
 import { formatDistanceToNow, differenceInHours } from 'date-fns';
 import DataTable from './DataTable';
 import StatusBadge from './StatusBadge';
 import AuthCard from './AuthCard';
-import { Application, Backup, Authentication, Incident } from '../types';
+import { Application, Backup,  Incident } from '../types';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { groupBy } from 'lodash';
 import {MonitoringSection} from './sections/MonitoringSection'
