@@ -62,6 +62,7 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({
   application,
   printView
 }) => {
+  if (!application.findings) return null;
   const findingColumns = [
     {
       header: "Type",

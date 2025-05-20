@@ -90,15 +90,16 @@ export interface PasswordPolicy {
 export interface Authentication {
   type: string;
   name: string;
+  domain: string;
   mfa: MFA;
   passwordPolicy?: PasswordPolicy;
   provider?: string;
 }
 
 export interface AccessControl {
-  authentication: Authentication[];
+  authentication?: Authentication[];
   users: User[];
-  roles: any[];
+  roles?: string[];
 }
 
 export interface Application {
@@ -106,24 +107,24 @@ export interface Application {
   type: string;
   description: string;
   criticality: string;
-  locations: CloudLocation[];
-  assessments: Assessment[];
-  id: string;
-  dataClassication: string;
-  use: string;
-  source: string;
-  restores: Restore[];
-  backups: Backup[];
-  version: Version;
-  repositories: Repository[];
-  lifecycle: string;
-  cost: Cost;
+  locations?: CloudLocation[];
+  assessments?: Assessment[];
+  id?: string;
+  dataClassication?: string;
+  use?: string;
+  source?: string;
+  restores?: Restore[];
+  backups?: Backup[];
+  version?: Version;
+  repositories?: Repository[];
+  lifecycle?: string;
+  cost?: Cost;
   accessControl: AccessControl;
-  incidents: Incident[];
-  changes: Change[];
-  findings: Finding[];
-  monitoring: MonitoringMetrics;
-  pipelines: Pipeline[];
+  incidents?: Incident[];
+  changes?: Change[];
+  findings?: Finding[];
+  monitoring?: MonitoringMetrics;
+  pipelines?: Pipeline[];
 }
 
 export interface User {

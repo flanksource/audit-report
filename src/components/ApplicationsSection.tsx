@@ -50,12 +50,12 @@ const PIPELINE_STATUS_COLORS = {
   cancelled: "bg-gray-100 text-gray-800"
 };
 
-const TYPE_COLORS = {
-  security: "#ef4444", // red-500
-  compliance: "#3b82f6", // blue-500
-  performance: "#8b5cf6", // purple-500
-  reliability: "#10b981" // emerald-500
-};
+// const TYPE_COLORS = {
+//   security: "#ef4444", // red-500
+//   compliance: "#3b82f6", // blue-500
+//   performance: "#8b5cf6", // purple-500
+//   reliability: "#10b981" // emerald-500
+// };
 
 const SEVERITY_COLORS = {
   critical: "#ef4444", // red-500
@@ -141,13 +141,14 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
     };
   };
 
-  const backupStats = calculateBackupStats(application.backups);
-  const incidentStats = calculateIncidentStats(application.incidents);
-  const latestBackup = application.backups[0];
-  const latestRestore = application.restores[0];
-  const latestIncident = application.incidents[0];
+  const backupStats = application.backups ? calculateBackupStats(application.backups) : null;
+  const incidentStats = application.incidents ? calculateIncidentStats(application.incidents) : null;
+  // const latestBackup = application.backups[0];
+  // const latestRestore = application.restores[0];
+  // const latestIncident = application.incidents[0];
 
   const formatDate = (dateString: string) => {
+    if (!dateString) return "-";
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
@@ -197,7 +198,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
       header: "Auth Type",
       accessor: "authType",
       render: (value: string, user: any) => {
-        const auth = application.accessControl.authentication.find((a) =>
+        const auth = application.accessControl.authentication?.find((a) =>
           user.email.endsWith(a.domain || "")
         );
         return auth ? auth.type.toUpperCase() : "N/A";
@@ -520,7 +521,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
               </h4>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {application.accessControl.authentication
-                  .slice(0, 3)
+                  ?.slice(0, 3)
                   .map((auth) => (
                     <AuthCard key={auth.name} auth={auth} />
                   ))}
@@ -531,19 +532,22 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
 
         <hr className="border-gray-200" />
 
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <GitCommit className="mr-2 text-teal-600" size={20} />
-            Changes
-          </h3>
-          <DataTable columns={changeColumns} data={application.changes} />
-        </div>
+        {application.changes && (
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <GitCommit className="mr-2 text-teal-600" size={20} />
+              Changes
+            </h3>
+            <DataTable columns={changeColumns} data={application.changes} />
+          </div>
+        )}
 
         <hr className="border-gray-200" />
 
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <AlertOctagon className="mr-2 text-teal-600" size={20} />
+        {incidentStats && application.incidents && (
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <AlertOctagon className="mr-2 text-teal-600" size={20} />
             Incidents
           </h3>
           <div className="space-y-6">
@@ -626,13 +630,15 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
             <DataTable columns={incidentColumns} data={application.incidents} />
           </div>
         </div>
+        )}
 
         <hr className="border-gray-200" />
 
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <Save className="mr-2 text-teal-600" size={20} />
-            Recent Backups
+        {backupStats && application.backups&& (
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <Save className="mr-2 text-teal-600" size={20} />
+              Recent Backups
           </h3>
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
@@ -663,10 +669,12 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
             </div>
             <DataTable columns={backupColumns} data={application.backups} />
           </div>
-        </div>
+          </div>
+        )}
 
         <hr className="border-gray-200" />
 
+        {application.restores && (
         <div>
           <h3 className="mb-4 flex items-center text-xl font-semibold">
             <RotateCcw className="mr-2 text-teal-600" size={20} />
@@ -674,9 +682,11 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
           </h3>
           <DataTable columns={restoreColumns} data={application.restores} />
         </div>
+        )}
 
         <hr className="border-gray-200" />
 
+        {application.assessments && (
         <div>
           <h3 className="mb-4 flex items-center text-xl font-semibold">
             <FileSearch className="mr-2 text-teal-600" size={20} />
@@ -687,6 +697,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
             data={application.assessments}
           />
         </div>
+        )}
 
         <hr className="border-gray-200" />
 
@@ -701,6 +712,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
 
         <hr className="border-gray-200" />
 
+        {application.pipelines && (
         <div>
           <h3 className="mb-4 flex items-center text-xl font-semibold">
             <GitPullRequest className="mr-2 text-teal-600" size={20} />
@@ -779,6 +791,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
             <DataTable columns={pipelineColumns} data={application.pipelines} />
           </div>
         </div>
+        )}
 
         <div>
           <h3 className="mb-4 flex items-center text-xl font-semibold">

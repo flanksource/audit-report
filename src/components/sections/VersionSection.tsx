@@ -54,9 +54,11 @@ export const VersionSection = ({ application }: VersionSectionProps) => {
           </div>
         ))}
       </div>
+      {application.version && (
       <div className="space-y-4">
         <DataTable columns={versionColumns} data={[application.version]} />
       </div>
+      )}
     </Section>
   );
 };
