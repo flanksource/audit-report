@@ -1,4 +1,4 @@
-import { Application } from '../types';
+import { Application } from "../types";
 
 export const applications: Application[] = [
   {
@@ -100,7 +100,7 @@ export const applications: Application[] = [
         region: "eu-west-1",
         id: "2348920489",
         name: "SAP AWS Hosting Account",
-        provider: "AWS",
+        provider: "AWS"
       },
       {
         type: "cloud",
@@ -108,7 +108,7 @@ export const applications: Application[] = [
         region: "eu-west-2",
         id: "2348920489",
         name: "SAP AWS Hosting Account",
-        provider: "AWS",
+        provider: "AWS"
       }
     ],
     findings: [
@@ -117,7 +117,8 @@ export const applications: Application[] = [
         type: "security",
         severity: "critical",
         title: "Unencrypted Database Backups",
-        description: "Database backups are not encrypted at rest, potentially exposing sensitive data.",
+        description:
+          "Database backups are not encrypted at rest, potentially exposing sensitive data.",
         date: "2024-05-15",
         lastObserved: "2024-05-30",
         status: "open",
@@ -143,18 +144,21 @@ export const applications: Application[] = [
         date: "2024-05-25",
         lastObserved: "2024-05-30",
         status: "open",
-        remediation: "Optimize database queries and consider scaling up resources."
+        remediation:
+          "Optimize database queries and consider scaling up resources."
       },
       {
         id: "F004",
         type: "reliability",
         severity: "low",
         title: "Insufficient Monitoring Coverage",
-        description: "Some background jobs lack proper monitoring and alerting.",
+        description:
+          "Some background jobs lack proper monitoring and alerting.",
         date: "2024-05-28",
         lastObserved: "2024-05-30",
         status: "resolved",
-        remediation: "Implement comprehensive monitoring for all background processes."
+        remediation:
+          "Implement comprehensive monitoring for all background processes."
       }
     ],
     assessments: [
@@ -162,8 +166,8 @@ export const applications: Application[] = [
         name: "SOC2",
         type: "Standard",
         assesor: {
-          type: 'Extrnal',
-          name: "SOC2 Auditors imc",
+          type: "Extrnal",
+          name: "SOC2 Auditors imc"
         },
         date: "2025-01-01",
         expiry: "2026-01-01",
@@ -174,8 +178,8 @@ export const applications: Application[] = [
         },
         unresolved: {
           high: 1,
-          low: 0,
-        },
+          low: 0
+        }
       }
     ],
     id: "ABC001",
@@ -184,45 +188,45 @@ export const applications: Application[] = [
     source: "COTS",
     restores: [
       {
-        id: '1',
-        database: 'Staging',
-        date: '2024-05-28',
-        source: 'Production (2024-05-27)',
-        status: 'completed',
-        completedDate: '2024-05-28',
+        id: "1",
+        database: "Staging",
+        date: "2024-05-28",
+        source: "Production (2024-05-27)",
+        status: "completed",
+        completedDate: "2024-05-28"
       },
       {
-        id: '2',
-        database: 'Development',
-        date: '2024-05-25',
-        source: 'Production (2024-05-24)',
-        status: 'completed',
-        completedDate: '2024-05-25',
-      },
+        id: "2",
+        database: "Development",
+        date: "2024-05-25",
+        source: "Production (2024-05-24)",
+        status: "completed",
+        completedDate: "2024-05-25"
+      }
     ],
     backups: [
       {
-        id: '1',
-        database: 'Production',
-        date: '2024-05-30',
-        size: '4.2 GB',
-        status: 'successful',
+        id: "1",
+        database: "Production",
+        date: "2024-05-30",
+        size: "4.2 GB",
+        status: "successful"
       },
       {
-        id: '2',
-        database: 'Production',
-        date: '2024-05-29',
-        size: '4.1 GB',
-        status: 'successful',
+        id: "2",
+        database: "Production",
+        date: "2024-05-29",
+        size: "4.1 GB",
+        status: "successful"
       },
       {
-        id: '3',
-        database: 'Staging',
-        date: '2024-05-30',
-        size: '2.7 GB',
-        status: 'failed',
-        error: 'Network timeout during backup process',
-      },
+        id: "3",
+        database: "Staging",
+        date: "2024-05-30",
+        size: "2.7 GB",
+        status: "failed",
+        error: "Network timeout during backup process"
+      }
     ],
     version: {
       number: "v1.0.0",
@@ -233,7 +237,7 @@ export const applications: Application[] = [
       createdBy: "John Doe",
       authorizedBy: "Jane Smith"
     },
-    lifecycle: 'Active',
+    lifecycle: "Active",
     cost: {
       daily: 100,
       monthly: 3000,
@@ -265,74 +269,74 @@ export const applications: Application[] = [
       ],
       users: [
         {
-          id: '1',
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          role: 'Administrator',
-          created: '2024-01-15',
-          lastLogin: '2024-05-28',
-          lastAccessReview: '2024-04-10',
+          id: "1",
+          name: "John Doe",
+          email: "john.doe@example.com",
+          role: "Administrator",
+          created: "2024-01-15",
+          lastLogin: "2024-05-28",
+          lastAccessReview: "2024-04-10"
         },
         {
-          id: '2',
-          name: 'Jane Smith',
-          email: 'jane.smith@example.com',
-          role: 'Developer',
-          created: '2024-02-22',
-          lastLogin: '2024-05-30',
-          lastAccessReview: '2024-04-10',
-        },
+          id: "2",
+          name: "Jane Smith",
+          email: "jane.smith@example.com",
+          role: "Developer",
+          created: "2024-02-22",
+          lastLogin: "2024-05-30",
+          lastAccessReview: "2024-04-10"
+        }
       ],
       roles: []
     },
     incidents: [
       {
-        id: '1',
-        date: '2024-05-28',
-        severity: 'high',
-        description: 'API service outage affecting customer portal',
-        status: 'resolved',
-        resolvedDate: '2024-05-28',
+        id: "1",
+        date: "2024-05-28",
+        severity: "high",
+        description: "API service outage affecting customer portal",
+        status: "resolved",
+        resolvedDate: "2024-05-28"
       },
       {
-        id: '2',
-        date: '2024-05-20',
-        severity: 'medium',
-        description: 'Elevated error rates in payment processing',
-        status: 'resolved',
-        resolvedDate: '2024-05-21',
+        id: "2",
+        date: "2024-05-20",
+        severity: "medium",
+        description: "Elevated error rates in payment processing",
+        status: "resolved",
+        resolvedDate: "2024-05-21"
       },
       {
-        id: '3',
-        date: '2024-05-15',
-        severity: 'low',
-        description: 'Slow response times in reporting module',
-        status: 'resolved',
-        resolvedDate: '2024-05-16',
-      },
+        id: "3",
+        date: "2024-05-15",
+        severity: "low",
+        description: "Slow response times in reporting module",
+        status: "resolved",
+        resolvedDate: "2024-05-16"
+      }
     ],
     changes: [
       {
-        id: '1',
-        date: '2024-05-30',
-        user: 'John Doe',
-        description: 'Updated user permissions for finance module',
-        status: 'completed',
+        id: "1",
+        date: "2024-05-30",
+        user: "John Doe",
+        description: "Updated user permissions for finance module",
+        status: "completed"
       },
       {
-        id: '2',
-        date: '2024-05-28',
-        user: 'Jane Smith',
-        description: 'Deployed v2.4.0 to production',
-        status: 'completed',
+        id: "2",
+        date: "2024-05-28",
+        user: "Jane Smith",
+        description: "Deployed v2.4.0 to production",
+        status: "completed"
       },
       {
-        id: '3',
-        date: '2024-05-25',
-        user: 'Michael Brown',
-        description: 'Modified database schema for customers table',
-        status: 'failed',
-      },
-    ],
+        id: "3",
+        date: "2024-05-25",
+        user: "Michael Brown",
+        description: "Modified database schema for customers table",
+        status: "failed"
+      }
+    ]
   }
 ];

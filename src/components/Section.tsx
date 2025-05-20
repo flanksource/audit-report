@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { LucideIcon } from 'lucide-react';
+import React, { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
 
 interface SectionProps {
   title: string;
@@ -10,13 +10,11 @@ interface SectionProps {
 const Section: React.FC<SectionProps> = ({ title, icon: Icon, children }) => {
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4 flex items-center">
+      <h3 className="mb-4 flex items-center text-xl font-semibold">
         <Icon className="mr-2 text-teal-600" size={20} />
         {title}
       </h3>
-      <div className="space-y-6">
-        {children}
-      </div>
+      <div className="space-y-6">{children}</div>
     </div>
   );
 };

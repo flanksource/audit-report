@@ -1,6 +1,6 @@
 // Location Types
 export interface CloudLocation {
-  type: 'cloud';
+  type: "cloud";
   role: string;
   region: string;
   id: string;
@@ -25,13 +25,13 @@ export interface MonitoringMetrics {
 
 export interface Finding {
   id: string;
-  type: 'security' | 'compliance' | 'performance' | 'reliability';
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  type: "security" | "compliance" | "performance" | "reliability";
+  severity: "critical" | "high" | "medium" | "low";
   title: string;
   description: string;
   date: string;
   lastObserved: string;
-  status: 'open' | 'resolved' | 'in-progress' | 'accepted';
+  status: "open" | "resolved" | "in-progress" | "accepted";
   remediation?: string;
 }
 
@@ -56,7 +56,7 @@ export interface Assessment {
 }
 
 export interface Repository {
-  type: 'GitHub' | 'Azure DevOps' | 'GitLab';
+  type: "GitHub" | "Azure DevOps" | "GitLab";
   url: string;
   name: string;
 }
@@ -141,15 +141,15 @@ export interface Change {
   date: string;
   user: string;
   description: string;
-  status: 'completed' | 'pending' | 'failed';
+  status: "completed" | "pending" | "failed";
 }
 
 export interface Incident {
   id: string;
   date: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: "critical" | "high" | "medium" | "low";
   description: string;
-  status: 'resolved' | 'investigating' | 'mitigated';
+  status: "resolved" | "investigating" | "mitigated";
   resolvedDate?: string;
 }
 
@@ -158,7 +158,7 @@ export interface Pipeline {
   lastRun: string;
   lastRunBy: string;
   gitTag: string;
-  status: 'success' | 'failed' | 'running' | 'cancelled';
+  status: "success" | "failed" | "running" | "cancelled";
   repository: string;
   duration: string;
   environment: string;
@@ -169,7 +169,7 @@ export interface Backup {
   database: string;
   date: string;
   size: string;
-  status: 'successful' | 'failed';
+  status: "successful" | "failed";
   error?: string;
 }
 
@@ -178,6 +178,6 @@ export interface Restore {
   database: string;
   date: string;
   source: string;
-  status: 'completed' | 'in-progress' | 'failed';
+  status: "completed" | "in-progress" | "failed";
   completedDate?: string;
 }

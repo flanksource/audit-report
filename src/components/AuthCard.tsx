@@ -1,6 +1,6 @@
-import React from 'react';
-import { Key } from 'lucide-react';
-import { Authentication } from '../types';
+import React from "react";
+import { Key } from "lucide-react";
+import { Authentication } from "../types";
 
 interface AuthCardProps {
   auth: Authentication;
@@ -8,20 +8,20 @@ interface AuthCardProps {
 
 const AuthCard: React.FC<AuthCardProps> = ({ auth }) => {
   return (
-    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
-          <div className="flex items-center justify-between mb-3">
+          <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center">
-              <Key className="text-gray-400 mr-2" size={16} />
+              <Key className="mr-2 text-gray-400" size={16} />
               <h4 className="font-medium">{auth.name}</h4>
             </div>
-            <span className="text-xs font-medium text-gray-500 bg-gray-200 px-2 py-1 rounded">
+            <span className="rounded bg-gray-200 px-2 py-1 text-xs font-medium text-gray-500">
               {auth.type.toUpperCase()}
             </span>
           </div>
         </div>
-        
+
         <div>
           <p className="text-xs text-gray-500">MFA Type</p>
           <p className="text-sm">{auth.mfa.type}</p>
@@ -30,7 +30,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ auth }) => {
           <p className="text-xs text-gray-500">MFA Enforcement</p>
           <p className="text-sm">{auth.mfa.enforced}</p>
         </div>
-        
+
         {auth.passwordPolicy && (
           <>
             <div>
@@ -43,7 +43,7 @@ const AuthCard: React.FC<AuthCardProps> = ({ auth }) => {
             </div>
           </>
         )}
-        
+
         {auth.provider && (
           <div className="col-span-2">
             <p className="text-xs text-gray-500">Provider</p>
@@ -55,4 +55,4 @@ const AuthCard: React.FC<AuthCardProps> = ({ auth }) => {
   );
 };
 
-export default AuthCard
+export default AuthCard;
