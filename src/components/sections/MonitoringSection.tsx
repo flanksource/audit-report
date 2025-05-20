@@ -82,6 +82,7 @@ export const MonitoringSection: React.FC<MonitoringSectionProps> = ({
           ))}
         </div>
       </div>
+      <hr className="border-gray-200" />
     </Section>
   );
 };

@@ -2,16 +2,12 @@ import React from "react";
 import {
   Save,
   RotateCcw,
-  Shield,
   Box,
   Cloud,
   Tag,
   GitCommit,
   AlertOctagon,
-  Activity,
-  HardDrive,
   FileSearch,
-  AlertCircle,
   Timer,
   GitPullRequest
 } from "lucide-react";
@@ -34,8 +30,8 @@ import { groupBy } from "lodash";
 import { MonitoringSection } from "./sections/MonitoringSection";
 import { VersionSection } from "./sections/VersionSection";
 import FindingsSection from "./sections/FindingsSection";
-import ApplicationDetails from "./ApplicationDetails";
-import ApplicationAccessControl from "./AccessControl";
+import ApplicationDetails from "./sections/ApplicationDetailsSection";
+import ApplicationAccessControl from "./sections/AccessControlSection";
 
 interface ApplicationsSectionProps {
   application: Application;
@@ -284,74 +280,6 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
     }
   ];
 
-  const findingColumns = [
-    {
-      header: "Type",
-      accessor: "type",
-      render: (value: string) => {
-        const getTypeIcon = (type: string) => {
-          switch (type) {
-            case "security":
-              return <Shield size={16} className="text-gray-500" />;
-            case "compliance":
-              return <FileSearch size={16} className="text-gray-500" />;
-            case "performance":
-              return <Activity size={16} className="text-gray-500" />;
-            case "reliability":
-              return <HardDrive size={16} className="text-gray-500" />;
-            default:
-              return <AlertCircle size={16} className="text-gray-500" />;
-          }
-        };
-
-        return (
-          <span className="inline-flex items-center gap-2 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
-            {getTypeIcon(value)}
-            <span className="capitalize">{value}</span>
-          </span>
-        );
-      }
-    },
-    {
-      header: "Severity",
-      accessor: "severity",
-      render: (value: string) => (
-        <StatusBadge status={value as any} printView={printView} />
-      )
-    },
-    { header: "Title", accessor: "title" },
-    { header: "Description", accessor: "description" },
-    {
-      header: "First Observed",
-      accessor: "date",
-      render: (value: string) => formatDate(value)
-    },
-    {
-      header: "Last Observed",
-      accessor: "lastObserved",
-      render: (value: string) => formatDate(value)
-    },
-    {
-      header: "Status",
-      accessor: "status",
-      render: (value: string) => (
-        <span
-          className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
-            value === "open"
-              ? "bg-red-100 text-red-800"
-              : value === "resolved"
-                ? "bg-green-100 text-green-800"
-                : value === "in-progress"
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-gray-100 text-gray-800"
-          }`}
-        >
-          <span className="capitalize">{value}</span>
-        </span>
-      )
-    }
-  ];
-
   const assessmentColumns = [
     { header: "Name", accessor: "name" },
     { header: "Type", accessor: "type" },
@@ -425,187 +353,185 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <ApplicationAccessControl accessControl={application.accessControl} />
 
         {application.changes && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <GitCommit className="mr-2 text-teal-600" size={20} />
-              Changes
-            </h3>
-            <DataTable columns={changeColumns} data={application.changes} />
-          </div>
+          <>
+            <div>
+              <h3 className="mb-4 flex items-center text-xl font-semibold">
+                <GitCommit className="mr-2 text-teal-600" size={20} />
+                Changes
+              </h3>
+              <DataTable columns={changeColumns} data={application.changes} />
+            </div>
+            <hr className="border-gray-200" />
+          </>
         )}
-
-        <hr className="border-gray-200" />
 
         {incidentStats && application.incidents && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <AlertOctagon className="mr-2 text-teal-600" size={20} />
-              Incidents
-            </h3>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-4 text-sm font-medium text-gray-600">
-                    Open Incidents by Severity
-                  </h4>
-                  <div className="space-y-2">
-                    {Object.entries(incidentStats.openBySeverity).map(
-                      ([severity, incidents]) => (
-                        <div
-                          key={severity}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center">
-                            <span
-                              className="mr-2 h-3 w-3 rounded-full"
-                              style={{
-                                backgroundColor:
-                                  SEVERITY_COLORS[
-                                    severity as keyof typeof SEVERITY_COLORS
-                                  ]
-                              }}
-                            />
-                            <span className="text-sm capitalize text-gray-600">
-                              {severity}
+          <>
+            <div>
+              <h3 className="mb-4 flex items-center text-xl font-semibold">
+                <AlertOctagon className="mr-2 text-teal-600" size={20} />
+                Incidents
+              </h3>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-4 text-sm font-medium text-gray-600">
+                      Open Incidents by Severity
+                    </h4>
+                    <div className="space-y-2">
+                      {Object.entries(incidentStats.openBySeverity).map(
+                        ([severity, incidents]) => (
+                          <div
+                            key={severity}
+                            className="flex items-center justify-between"
+                          >
+                            <div className="flex items-center">
+                              <span
+                                className="mr-2 h-3 w-3 rounded-full"
+                                style={{
+                                  backgroundColor:
+                                    SEVERITY_COLORS[
+                                      severity as keyof typeof SEVERITY_COLORS
+                                    ]
+                                }}
+                              />
+                              <span className="text-sm capitalize text-gray-600">
+                                {severity}
+                              </span>
+                            </div>
+                            <span className="text-sm font-medium">
+                              {incidents.length}
                             </span>
                           </div>
-                          <span className="text-sm font-medium">
-                            {incidents.length}
-                          </span>
-                        </div>
-                      )
-                    )}
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-2 text-sm font-medium text-gray-600">
+                      Average Resolution Time
+                    </h4>
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {incidentStats.avgResolutionTime}h
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-2 text-sm font-medium text-gray-600">
+                      Incidents by Type
+                    </h4>
+                    <div className="h-48">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={incidentStats.incidentsByType}
+                            dataKey="value"
+                            nameKey="severity"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={60}
+                            label
+                          >
+                            {incidentStats.incidentsByType.map((entry) => (
+                              <Cell
+                                key={entry.severity}
+                                fill={
+                                  SEVERITY_COLORS[
+                                    entry.severity as keyof typeof SEVERITY_COLORS
+                                  ]
+                                }
+                              />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                          <Legend content={renderLegend} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
                 </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Average Resolution Time
-                  </h4>
-                  <p className="text-2xl font-semibold text-teal-600">
-                    {incidentStats.avgResolutionTime}h
-                  </p>
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Incidents by Type
-                  </h4>
-                  <div className="h-48">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={incidentStats.incidentsByType}
-                          dataKey="value"
-                          nameKey="severity"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={60}
-                          label
-                        >
-                          {incidentStats.incidentsByType.map((entry) => (
-                            <Cell
-                              key={entry.severity}
-                              fill={
-                                SEVERITY_COLORS[
-                                  entry.severity as keyof typeof SEVERITY_COLORS
-                                ]
-                              }
-                            />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                        <Legend content={renderLegend} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
+                <DataTable
+                  columns={incidentColumns}
+                  data={application.incidents}
+                />
               </div>
-              <DataTable
-                columns={incidentColumns}
-                data={application.incidents}
-              />
             </div>
-          </div>
+            <hr className="border-gray-200" />
+          </>
         )}
-
-        <hr className="border-gray-200" />
 
         {backupStats && application.backups && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <Save className="mr-2 text-teal-600" size={20} />
-              Recent Backups
-            </h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
-                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Average Backup Size
-                  </h4>
-                  <p className="text-2xl font-semibold text-teal-600">
-                    {backupStats.avgSize} GB
-                  </p>
+          <>
+            <div>
+              <h3 className="mb-4 flex items-center text-xl font-semibold">
+                <Save className="mr-2 text-teal-600" size={20} />
+                Recent Backups
+              </h3>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
+                  <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-2 text-sm font-medium text-gray-600">
+                      Average Backup Size
+                    </h4>
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {backupStats.avgSize} GB
+                    </p>
+                  </div>
+                  <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-2 text-sm font-medium text-gray-600">
+                      Backup Success Rate
+                    </h4>
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {backupStats.successRate}%
+                    </p>
+                  </div>
+                  <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    <h4 className="mb-2 text-sm font-medium text-gray-600">
+                      Last Backup Age
+                    </h4>
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {backupStats.backupAge}
+                    </p>
+                  </div>
                 </div>
-                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Backup Success Rate
-                  </h4>
-                  <p className="text-2xl font-semibold text-teal-600">
-                    {backupStats.successRate}%
-                  </p>
-                </div>
-                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Last Backup Age
-                  </h4>
-                  <p className="text-2xl font-semibold text-teal-600">
-                    {backupStats.backupAge}
-                  </p>
-                </div>
+                <DataTable columns={backupColumns} data={application.backups} />
               </div>
-              <DataTable columns={backupColumns} data={application.backups} />
             </div>
-          </div>
+            <hr className="border-gray-200" />
+          </>
         )}
-
-        <hr className="border-gray-200" />
 
         {application.restores && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <RotateCcw className="mr-2 text-teal-600" size={20} />
-              Recent Restores
-            </h3>
-            <DataTable columns={restoreColumns} data={application.restores} />
-          </div>
+          <>
+            <div>
+              <h3 className="mb-4 flex items-center text-xl font-semibold">
+                <RotateCcw className="mr-2 text-teal-600" size={20} />
+                Recent Restores
+              </h3>
+              <DataTable columns={restoreColumns} data={application.restores} />
+            </div>
+            <hr className="border-gray-200" />
+          </>
         )}
-
-        <hr className="border-gray-200" />
 
         {application.assessments && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <FileSearch className="mr-2 text-teal-600" size={20} />
-              Security Assessments
-            </h3>
-            <DataTable
-              columns={assessmentColumns}
-              data={application.assessments}
-            />
-          </div>
+          <>
+            <div>
+              <h3 className="mb-4 flex items-center text-xl font-semibold">
+                <FileSearch className="mr-2 text-teal-600" size={20} />
+                Security Assessments
+              </h3>
+              <DataTable
+                columns={assessmentColumns}
+                data={application.assessments}
+              />
+            </div>
+            <hr className="border-gray-200" />
+          </>
         )}
 
-        <hr className="border-gray-200" />
-
         <FindingsSection application={application} printView={printView} />
-
-        <hr className="border-gray-200" />
-
         <MonitoringSection application={application} />
-
-        <hr className="border-gray-200" />
         <VersionSection application={application} />
-
-        <hr className="border-gray-200" />
 
         {application.pipelines && (
           <div>

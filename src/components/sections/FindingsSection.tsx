@@ -204,6 +204,7 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({
         </div>
         <DataTable columns={findingColumns} data={application.findings} />
       </div>
+      <hr className="border-gray-200" />
     </Section>
   );
 };

@@ -1,9 +1,9 @@
 import React from "react";
 import { UserCircle } from "lucide-react";
-import DataTable from "./DataTable";
-import AuthCard from "./AuthCard";
-import { formatDate } from "../utils";
-import { AccessControl } from "../types";
+import DataTable from "../DataTable";
+import AuthCard from "../AuthCard";
+import { formatDate } from "../../utils";
+import { AccessControl } from "../../types";
 
 interface AccessControlProps {
   accessControl: AccessControl;
@@ -53,14 +53,19 @@ const ApplicationAccessControl: React.FC<AccessControlProps> = ({
 
         <div className="space-y-6">
           <DataTable columns={userColumns} data={accessControl.users} />
-          <div>
-            <h4 className="mb-3 text-lg font-medium">Authentication Methods</h4>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {accessControl.authentication
-                ?.slice(0, 3)
-                .map((auth) => <AuthCard key={auth.name} auth={auth} />)}
+
+          {accessControl.authentication && (
+            <div>
+              <h4 className="mb-3 text-lg font-medium">
+                Authentication Methods
+              </h4>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                {accessControl.authentication
+                  ?.slice(0, 3)
+                  .map((auth) => <AuthCard key={auth.name} auth={auth} />)}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       <hr className="border-gray-200" />

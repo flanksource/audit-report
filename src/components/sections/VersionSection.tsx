@@ -10,6 +10,7 @@ interface VersionSectionProps {
 }
 
 export const VersionSection = ({ application }: VersionSectionProps) => {
+  if (!application.version) return null;
   const versionColumns = [
     { header: "Number", accessor: "number" },
     {
@@ -55,10 +56,11 @@ export const VersionSection = ({ application }: VersionSectionProps) => {
         ))}
       </div>
       {application.version && (
-      <div className="space-y-4">
-        <DataTable columns={versionColumns} data={[application.version]} />
-      </div>
+        <div className="space-y-4">
+          <DataTable columns={versionColumns} data={[application.version]} />
+        </div>
       )}
+      <hr className="border-gray-200" />
     </Section>
   );
 };
