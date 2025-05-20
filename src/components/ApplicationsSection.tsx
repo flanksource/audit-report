@@ -1,15 +1,11 @@
 import React from "react";
 import {
-  AlertTriangle,
   Save,
   RotateCcw,
-  Info,
   Shield,
-  Globe,
   Box,
   Cloud,
   Tag,
-  UserCircle,
   GitCommit,
   AlertOctagon,
   Activity,
@@ -20,10 +16,11 @@ import {
   GitPullRequest
 } from "lucide-react";
 import { Icon } from "./Icon";
+import { formatDate } from "../utils";
+
 import { formatDistanceToNow, differenceInHours } from "date-fns";
 import DataTable from "./DataTable";
 import StatusBadge from "./StatusBadge";
-import AuthCard from "./AuthCard";
 import { Application, Backup, Incident } from "../types";
 import {
   PieChart,
@@ -38,6 +35,7 @@ import { MonitoringSection } from "./sections/MonitoringSection";
 import { VersionSection } from "./sections/VersionSection";
 import FindingsSection from "./sections/FindingsSection";
 import ApplicationDetails from "./ApplicationDetails";
+import ApplicationAccessControl from "./AccessControl";
 
 interface ApplicationsSectionProps {
   application: Application;
@@ -142,16 +140,15 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
     };
   };
 
-  const backupStats = application.backups ? calculateBackupStats(application.backups) : null;
-  const incidentStats = application.incidents ? calculateIncidentStats(application.incidents) : null;
+  const backupStats = application.backups
+    ? calculateBackupStats(application.backups)
+    : null;
+  const incidentStats = application.incidents
+    ? calculateIncidentStats(application.incidents)
+    : null;
   // const latestBackup = application.backups[0];
   // const latestRestore = application.restores[0];
   // const latestIncident = application.incidents[0];
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "-";
-    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
-  };
 
   const calculateDuration = (start: string, end?: string) => {
     const startDate = new Date(start);
@@ -188,37 +185,6 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
           <span className="capitalize">{value}</span>
         </span>
       )
-    }
-  ];
-
-  const userColumns = [
-    { header: "Name", accessor: "name" },
-    { header: "Email", accessor: "email" },
-    { header: "Role", accessor: "role" },
-    {
-      header: "Auth Type",
-      accessor: "authType",
-      render: (value: string, user: any) => {
-        const auth = application.accessControl.authentication?.find((a) =>
-          user.email.endsWith(a.domain || "")
-        );
-        return auth ? auth.type.toUpperCase() : "N/A";
-      }
-    },
-    {
-      header: "Created",
-      accessor: "created",
-      render: (value: string) => formatDate(value)
-    },
-    {
-      header: "Last Login",
-      accessor: "lastLogin",
-      render: (value: string) => formatDate(value)
-    },
-    {
-      header: "Last Access Review",
-      accessor: "lastAccessReview",
-      render: (value: string) => formatDate(value)
     }
   ];
 
@@ -456,32 +422,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
       <div className="space-y-6 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <ApplicationDetails application={application} />
 
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <UserCircle className="mr-2 text-teal-600" size={20} />
-            Users & Roles
-          </h3>
-          <div className="space-y-6">
-            <DataTable
-              columns={userColumns}
-              data={application.accessControl.users}
-            />
-            <div>
-              <h4 className="mb-3 text-lg font-medium">
-                Authentication Methods
-              </h4>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {application.accessControl.authentication
-                  ?.slice(0, 3)
-                  .map((auth) => (
-                    <AuthCard key={auth.name} auth={auth} />
-                  ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr className="border-gray-200" />
+        <ApplicationAccessControl accessControl={application.accessControl} />
 
         {application.changes && (
           <div>
@@ -499,155 +440,158 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
           <div>
             <h3 className="mb-4 flex items-center text-xl font-semibold">
               <AlertOctagon className="mr-2 text-teal-600" size={20} />
-            Incidents
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-4 text-sm font-medium text-gray-600">
-                  Open Incidents by Severity
-                </h4>
-                <div className="space-y-2">
-                  {Object.entries(incidentStats.openBySeverity).map(
-                    ([severity, incidents]) => (
-                      <div
-                        key={severity}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center">
-                          <span
-                            className="mr-2 h-3 w-3 rounded-full"
-                            style={{
-                              backgroundColor:
-                                SEVERITY_COLORS[
-                                  severity as keyof typeof SEVERITY_COLORS
-                                ]
-                            }}
-                          />
-                          <span className="text-sm capitalize text-gray-600">
-                            {severity}
+              Incidents
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-4 text-sm font-medium text-gray-600">
+                    Open Incidents by Severity
+                  </h4>
+                  <div className="space-y-2">
+                    {Object.entries(incidentStats.openBySeverity).map(
+                      ([severity, incidents]) => (
+                        <div
+                          key={severity}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center">
+                            <span
+                              className="mr-2 h-3 w-3 rounded-full"
+                              style={{
+                                backgroundColor:
+                                  SEVERITY_COLORS[
+                                    severity as keyof typeof SEVERITY_COLORS
+                                  ]
+                              }}
+                            />
+                            <span className="text-sm capitalize text-gray-600">
+                              {severity}
+                            </span>
+                          </div>
+                          <span className="text-sm font-medium">
+                            {incidents.length}
                           </span>
                         </div>
-                        <span className="text-sm font-medium">
-                          {incidents.length}
-                        </span>
-                      </div>
-                    )
-                  )}
+                      )
+                    )}
+                  </div>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Average Resolution Time
+                  </h4>
+                  <p className="text-2xl font-semibold text-teal-600">
+                    {incidentStats.avgResolutionTime}h
+                  </p>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Incidents by Type
+                  </h4>
+                  <div className="h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={incidentStats.incidentsByType}
+                          dataKey="value"
+                          nameKey="severity"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={60}
+                          label
+                        >
+                          {incidentStats.incidentsByType.map((entry) => (
+                            <Cell
+                              key={entry.severity}
+                              fill={
+                                SEVERITY_COLORS[
+                                  entry.severity as keyof typeof SEVERITY_COLORS
+                                ]
+                              }
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                        <Legend content={renderLegend} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Average Resolution Time
-                </h4>
-                <p className="text-2xl font-semibold text-teal-600">
-                  {incidentStats.avgResolutionTime}h
-                </p>
-              </div>
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Incidents by Type
-                </h4>
-                <div className="h-48">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={incidentStats.incidentsByType}
-                        dataKey="value"
-                        nameKey="severity"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={60}
-                        label
-                      >
-                        {incidentStats.incidentsByType.map((entry) => (
-                          <Cell
-                            key={entry.severity}
-                            fill={
-                              SEVERITY_COLORS[
-                                entry.severity as keyof typeof SEVERITY_COLORS
-                              ]
-                            }
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend content={renderLegend} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+              <DataTable
+                columns={incidentColumns}
+                data={application.incidents}
+              />
             </div>
-            <DataTable columns={incidentColumns} data={application.incidents} />
           </div>
-        </div>
         )}
 
         <hr className="border-gray-200" />
 
-        {backupStats && application.backups&& (
+        {backupStats && application.backups && (
           <div>
             <h3 className="mb-4 flex items-center text-xl font-semibold">
               <Save className="mr-2 text-teal-600" size={20} />
               Recent Backups
-          </h3>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
-              <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Average Backup Size
-                </h4>
-                <p className="text-2xl font-semibold text-teal-600">
-                  {backupStats.avgSize} GB
-                </p>
+            </h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-0 md:grid-cols-3">
+                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Average Backup Size
+                  </h4>
+                  <p className="text-2xl font-semibold text-teal-600">
+                    {backupStats.avgSize} GB
+                  </p>
+                </div>
+                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Backup Success Rate
+                  </h4>
+                  <p className="text-2xl font-semibold text-teal-600">
+                    {backupStats.successRate}%
+                  </p>
+                </div>
+                <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Last Backup Age
+                  </h4>
+                  <p className="text-2xl font-semibold text-teal-600">
+                    {backupStats.backupAge}
+                  </p>
+                </div>
               </div>
-              <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Backup Success Rate
-                </h4>
-                <p className="text-2xl font-semibold text-teal-600">
-                  {backupStats.successRate}%
-                </p>
-              </div>
-              <div className="max-w-[16rem] rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Last Backup Age
-                </h4>
-                <p className="text-2xl font-semibold text-teal-600">
-                  {backupStats.backupAge}
-                </p>
-              </div>
+              <DataTable columns={backupColumns} data={application.backups} />
             </div>
-            <DataTable columns={backupColumns} data={application.backups} />
-          </div>
           </div>
         )}
 
         <hr className="border-gray-200" />
 
         {application.restores && (
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <RotateCcw className="mr-2 text-teal-600" size={20} />
-            Recent Restores
-          </h3>
-          <DataTable columns={restoreColumns} data={application.restores} />
-        </div>
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <RotateCcw className="mr-2 text-teal-600" size={20} />
+              Recent Restores
+            </h3>
+            <DataTable columns={restoreColumns} data={application.restores} />
+          </div>
         )}
 
         <hr className="border-gray-200" />
 
         {application.assessments && (
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <FileSearch className="mr-2 text-teal-600" size={20} />
-            Security Assessments
-          </h3>
-          <DataTable
-            columns={assessmentColumns}
-            data={application.assessments}
-          />
-        </div>
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <FileSearch className="mr-2 text-teal-600" size={20} />
+              Security Assessments
+            </h3>
+            <DataTable
+              columns={assessmentColumns}
+              data={application.assessments}
+            />
+          </div>
         )}
 
         <hr className="border-gray-200" />
@@ -664,20 +608,21 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <hr className="border-gray-200" />
 
         {application.pipelines && (
-        <div>
-          <h3 className="mb-4 flex items-center text-xl font-semibold">
-            <GitPullRequest className="mr-2 text-teal-600" size={20} />
-            Pipelines
-          </h3>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Pipeline Status
-                </h4>
-                <div className="space-y-2">
-                  {Object.entries(groupBy(application.pipelines, "status")).map(
-                    ([status, items]) => (
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <GitPullRequest className="mr-2 text-teal-600" size={20} />
+              Pipelines
+            </h3>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Pipeline Status
+                  </h4>
+                  <div className="space-y-2">
+                    {Object.entries(
+                      groupBy(application.pipelines, "status")
+                    ).map(([status, items]) => (
                       <div
                         key={status}
                         className="flex items-center justify-between"
@@ -691,57 +636,59 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
                           {items.length}
                         </span>
                       </div>
-                    )
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Latest Pipeline
+                  </h4>
+                  {application.pipelines[0] && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">
+                        {application.pipelines[0].name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {formatDate(application.pipelines[0].lastRun)}
+                      </p>
+                      <span
+                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${PIPELINE_STATUS_COLORS[application.pipelines[0].status]}`}
+                      >
+                        <span className="capitalize">
+                          {application.pipelines[0].status}
+                        </span>
+                      </span>
+                    </div>
                   )}
                 </div>
-              </div>
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Latest Pipeline
-                </h4>
-                {application.pipelines[0] && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">
-                      {application.pipelines[0].name}
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h4 className="mb-2 text-sm font-medium text-gray-600">
+                    Average Duration
+                  </h4>
+                  <div className="flex items-center">
+                    <Timer className="mr-2 text-gray-400" size={16} />
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {application.pipelines.reduce((acc, curr) => {
+                        const [min, sec] = curr.duration.split("m ");
+                        return (
+                          acc +
+                          parseInt(min) * 60 +
+                          parseInt(sec.replace("s", ""))
+                        );
+                      }, 0) /
+                        application.pipelines.length /
+                        60}
+                      m
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {formatDate(application.pipelines[0].lastRun)}
-                    </p>
-                    <span
-                      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${PIPELINE_STATUS_COLORS[application.pipelines[0].status]}`}
-                    >
-                      <span className="capitalize">
-                        {application.pipelines[0].status}
-                      </span>
-                    </span>
                   </div>
-                )}
-              </div>
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-2 text-sm font-medium text-gray-600">
-                  Average Duration
-                </h4>
-                <div className="flex items-center">
-                  <Timer className="mr-2 text-gray-400" size={16} />
-                  <p className="text-2xl font-semibold text-teal-600">
-                    {application.pipelines.reduce((acc, curr) => {
-                      const [min, sec] = curr.duration.split("m ");
-                      return (
-                        acc +
-                        parseInt(min) * 60 +
-                        parseInt(sec.replace("s", ""))
-                      );
-                    }, 0) /
-                      application.pipelines.length /
-                      60}
-                    m
-                  </p>
                 </div>
               </div>
+              <DataTable
+                columns={pipelineColumns}
+                data={application.pipelines}
+              />
             </div>
-            <DataTable columns={pipelineColumns} data={application.pipelines} />
           </div>
-        </div>
         )}
 
         <div>
