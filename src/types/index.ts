@@ -1,0 +1,183 @@
+// Location Types
+export interface CloudLocation {
+  type: 'cloud';
+  role: string;
+  region: string;
+  id: string;
+  name: string;
+  provider: string;
+}
+
+export interface MonitoringTool {
+  name: string;
+  type: string;
+  url: string;
+  purpose: string;
+}
+
+export interface MonitoringMetrics {
+  alertsConfigured: number;
+  alertsFired: number;
+  uptime: number;
+  apdex: number;
+  tools: MonitoringTool[];
+}
+
+export interface Finding {
+  id: string;
+  type: 'security' | 'compliance' | 'performance' | 'reliability';
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  title: string;
+  description: string;
+  date: string;
+  lastObserved: string;
+  status: 'open' | 'resolved' | 'in-progress' | 'accepted';
+  remediation?: string;
+}
+
+export interface Assessment {
+  name: string;
+  type: string;
+  assesor: {
+    type: string;
+    name: string;
+  };
+  date: string;
+  expiry: string;
+  findings: {
+    high: number;
+    low: number;
+    medium: number;
+  };
+  unresolved: {
+    high: number;
+    low: number;
+  };
+}
+
+export interface Repository {
+  type: 'GitHub' | 'Azure DevOps' | 'GitLab';
+  url: string;
+  name: string;
+}
+
+export interface Version {
+  number: string;
+  released: string;
+  deployed: string;
+  gitTag: string;
+  repoName: string;
+  createdBy: string;
+  authorizedBy: string;
+}
+
+export interface Cost {
+  daily: number;
+  monthly: number;
+  annual: number;
+}
+
+export interface MFA {
+  type: string;
+  enforced: string;
+}
+
+export interface PasswordPolicy {
+  expiry: string;
+  strength: string;
+}
+
+export interface Authentication {
+  type: string;
+  name: string;
+  mfa: MFA;
+  passwordPolicy?: PasswordPolicy;
+  provider?: string;
+}
+
+export interface AccessControl {
+  authentication: Authentication[];
+  users: User[];
+  roles: any[];
+}
+
+export interface Application {
+  name: string;
+  type: string;
+  description: string;
+  criticality: string;
+  locations: CloudLocation[];
+  assessments: Assessment[];
+  id: string;
+  dataClassication: string;
+  use: string;
+  source: string;
+  restores: Restore[];
+  backups: Backup[];
+  version: Version;
+  repositories: Repository[];
+  lifecycle: string;
+  cost: Cost;
+  accessControl: AccessControl;
+  incidents: Incident[];
+  changes: Change[];
+  findings: Finding[];
+  monitoring: MonitoringMetrics;
+  pipelines: Pipeline[];
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  created: string;
+  lastLogin: string;
+  lastAccessReview: string;
+}
+
+export interface Change {
+  id: string;
+  date: string;
+  user: string;
+  description: string;
+  status: 'completed' | 'pending' | 'failed';
+}
+
+export interface Incident {
+  id: string;
+  date: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  description: string;
+  status: 'resolved' | 'investigating' | 'mitigated';
+  resolvedDate?: string;
+}
+
+export interface Pipeline {
+  name: string;
+  lastRun: string;
+  lastRunBy: string;
+  gitTag: string;
+  status: 'success' | 'failed' | 'running' | 'cancelled';
+  repository: string;
+  duration: string;
+  environment: string;
+}
+
+export interface Backup {
+  id: string;
+  database: string;
+  date: string;
+  size: string;
+  status: 'successful' | 'failed';
+  error?: string;
+}
+
+export interface Restore {
+  id: string;
+  database: string;
+  date: string;
+  source: string;
+  status: 'completed' | 'in-progress' | 'failed';
+  completedDate?: string;
+}
