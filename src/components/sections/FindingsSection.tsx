@@ -62,6 +62,7 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({
   application,
   printView
 }) => {
+  if (!application.findings) return null;
   const findingColumns = [
     {
       header: "Type",
@@ -203,6 +204,7 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({
         </div>
         <DataTable columns={findingColumns} data={application.findings} />
       </div>
+      <hr className="border-gray-200" />
     </Section>
   );
 };

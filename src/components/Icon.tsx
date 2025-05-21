@@ -3,6 +3,7 @@ import { IconMap as Icons } from "@flanksource/icons/mi";
 import { isEmpty } from "lodash";
 
 type IconMap = Record<string, string>;
+
 export const aliases: IconMap = {
   anthropic: "anthropic",
   openai: "openai",
@@ -565,7 +566,7 @@ export const aliases: IconMap = {
   updating: "hourglass"
 } as const;
 
-export var prefixes: IconMap = {
+export const prefixes: IconMap = {
   disruption: "stop",
   garbage: "trash",
   verified: "check",
@@ -731,7 +732,7 @@ export function findIconName(name?: string): IconType | undefined {
     return undefined;
   }
 
-  let icon = Icons[name as keyof typeof Icons];
+  const icon = Icons[name as keyof typeof Icons];
   if (icon != null) {
     return icon;
   }
@@ -740,13 +741,13 @@ export function findIconName(name?: string): IconType | undefined {
     return Icons[aliases[name] as keyof typeof Icons];
   }
 
-  for (let prefix in prefixes) {
+  for (const prefix in prefixes) {
     if (name.startsWith(prefix)) {
       return Icons[prefixes[prefix] as keyof typeof Icons];
     }
   }
 
-  for (let prefix in prefixes) {
+  for (const prefix in prefixes) {
     if (name.endsWith(prefix)) {
       return Icons[
         prefixes[prefix as keyof typeof Icons] as keyof typeof Icons
@@ -813,7 +814,7 @@ export function findByName(name?: string): IconType | undefined {
 
   name = processIconNameSearch(name);
 
-  var icon = findIconName(name);
+  let icon = findIconName(name);
 
   if (icon != null) {
     return icon;
@@ -889,7 +890,7 @@ function findIcon(
     if (icon) {
       const iconType = findByName(icon);
       if (iconType) {
-        let value = {
+        const value = {
           SVG: iconType,
           color: colorClassMap[color as keyof typeof colorClassMap]
         };

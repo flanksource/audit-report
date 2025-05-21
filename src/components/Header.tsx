@@ -1,16 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ClipboardCheck, Download, Eye, ChevronDown } from "lucide-react";
+import {
+  ClipboardCheck,
+  Download,
+  Eye,
+  ChevronDown,
+  Settings
+} from "lucide-react";
 
 interface HeaderProps {
   onExport: () => void;
   printView: boolean;
   onPrintViewChange: (printView: boolean) => void;
+  onOpenConfigModal: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   onExport,
   printView,
-  onPrintViewChange
+  onPrintViewChange,
+  onOpenConfigModal
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -103,6 +111,14 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
           </div>
+
+          <button
+            onClick={onOpenConfigModal}
+            title="Configure API Endpoint"
+            className="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800"
+          >
+            <Settings className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </header>

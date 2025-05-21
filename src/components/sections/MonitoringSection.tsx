@@ -11,6 +11,7 @@ interface MonitoringSectionProps {
 export const MonitoringSection: React.FC<MonitoringSectionProps> = ({
   application
 }) => {
+  if (!application.monitoring) return null;
   return (
     <Section title="Monitoring" icon={Activity}>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -81,6 +82,7 @@ export const MonitoringSection: React.FC<MonitoringSectionProps> = ({
           ))}
         </div>
       </div>
+      <hr className="border-gray-200" />
     </Section>
   );
 };
