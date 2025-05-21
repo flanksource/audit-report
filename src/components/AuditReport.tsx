@@ -3,6 +3,8 @@ import html2pdf from "html2pdf.js";
 import Header from "./Header";
 import ApplicationsSection from "./ApplicationsSection";
 import { Application } from "../types";
+import ConfigModal from "./ConfigModal";
+import { useConfigManagement } from "../hooks/useConfigManagement";
 
 // Make audit data globally available for export
 declare global {
@@ -17,6 +19,9 @@ const AuditReport: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { apiEndpoint, setApiEndpoint } = useConfigManagement();
+  const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
+
   const [printView, setPrintView] = useState(() => {
     // Initialize from URL parameter
     const params = new URLSearchParams(window.location.search);
@@ -24,21 +29,30 @@ const AuditReport: React.FC = () => {
   });
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const backendFromUrl = urlParams.get("backend");
+    if (backendFromUrl) {
+      const decodedApiEndpoint = decodeURIComponent(backendFromUrl);
+      setApiEndpoint(decodedApiEndpoint);
+    }
+  }, [setApiEndpoint]);
+
+  useEffect(() => {
+    if (apiEndpoint) {
+      setIsConfigModalOpen(false);
+      setLoading(false);
+    }
+
     const fetchData = async () => {
       try {
-        const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
         if (!apiEndpoint) {
-          throw new Error(
-            "API endpoint not configured. Please set VITE_API_ENDPOINT in your environment variables."
-          );
+          setIsConfigModalOpen(true);
+          setLoading(false);
+          return;
         }
 
-        // Add basic auth
-        const auth = "Basic " + btoa(import.meta.env.VITE_BASIC_AUTH);
         const response = await fetch(apiEndpoint, {
-          headers: {
-            Authorization: auth
-          }
+          credentials: "include"
         });
 
         if (!response.ok) {
@@ -60,7 +74,7 @@ const AuditReport: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [apiEndpoint]);
 
   useEffect(() => {
     // Update URL when print view changes
@@ -119,6 +133,9 @@ const AuditReport: React.FC = () => {
   return (
     <div className="audit-report flex min-h-screen flex-col bg-gray-50">
       <Header
+        onOpenConfigModal={() => {
+          setIsConfigModalOpen(true);
+        }}
         onExport={handleExport}
         printView={printView}
         onPrintViewChange={setPrintView}
@@ -142,6 +159,13 @@ const AuditReport: React.FC = () => {
           &copy; {new Date().getFullYear()} Flanksource • Audit Report
         </div>
       </footer>
+
+      <ConfigModal
+        isOpen={isConfigModalOpen}
+        onClose={() => setIsConfigModalOpen(false)}
+        setApiEndpoint={setApiEndpoint}
+        initialApiEndpoint={apiEndpoint}
+      />
     </div>
   );
 };
