@@ -1,0 +1,334 @@
+{
+  "name": "SAP",
+  "type": "ERP",
+  "description": "SAP ERP for warehouse division",
+  "pipelines": [
+    {
+      "name": "SAP ERP Core Build",
+      "lastRun": "2024-05-30T10:15:00Z",
+      "lastRunBy": "John Doe",
+      "gitTag": "release/1.0.0",
+      "status": "success",
+      "repository": "sap-erp-core",
+      "duration": "12m 30s",
+      "environment": "production"
+    },
+    {
+      "name": "Frontend Deploy",
+      "lastRun": "2024-05-30T09:45:00Z",
+      "lastRunBy": "Jane Smith",
+      "gitTag": "v2.4.0",
+      "status": "running",
+      "repository": "sap-erp-frontend",
+      "duration": "8m 15s",
+      "environment": "staging"
+    },
+    {
+      "name": "Infrastructure Update",
+      "lastRun": "2024-05-29T15:20:00Z",
+      "lastRunBy": "Michael Brown",
+      "gitTag": "infra/v1.2.0",
+      "status": "failed",
+      "repository": "sap-erp-infrastructure",
+      "duration": "15m 45s",
+      "environment": "production"
+    }
+  ],
+  "criticality": "High",
+  "repositories": [
+    {
+      "type": "GitHub",
+      "url": "https://github.com/company/sap-erp-core",
+      "name": "sap-erp-core"
+    },
+    {
+      "type": "GitLab",
+      "url": "https://gitlab.com/company/sap-erp-frontend",
+      "name": "sap-erp-frontend"
+    },
+    {
+      "type": "Azure DevOps",
+      "url": "https://dev.azure.com/company/sap-erp-infrastructure",
+      "name": "sap-erp-infrastructure"
+    }
+  ],
+  "monitoring": {
+    "alertsConfigured": 156,
+    "alertsFired": 23,
+    "uptime": 99.98,
+    "apdex": 0.95,
+    "tools": [
+      {
+        "name": "AWS CloudWatch",
+        "type": "metrics",
+        "url": "https://console.aws.amazon.com/cloudwatch/home?region=eu-west-1",
+        "purpose": "Infrastructure and application metrics monitoring"
+      },
+      {
+        "name": "Dynatrace",
+        "type": "apm",
+        "url": "https://abc123.live.dynatrace.com",
+        "purpose": "Application performance monitoring and user experience"
+      },
+      {
+        "name": "Jaeger",
+        "type": "tracing",
+        "url": "https://jaeger.example.com",
+        "purpose": "Distributed tracing and performance analysis"
+      },
+      {
+        "name": "Prometheus",
+        "type": "metrics",
+        "url": "https://prometheus.example.com",
+        "purpose": "Container and application metrics collection"
+      },
+      {
+        "name": "OpenSearch",
+        "type": "logs",
+        "url": "https://opensearch.example.com",
+        "purpose": "Log aggregation and analysis"
+      }
+    ]
+  },
+  "locations": [
+    {
+      "type": "cloud",
+      "role": "primary",
+      "region": "eu-west-1",
+      "id": "2348920489",
+      "name": "SAP AWS Hosting Account",
+      "provider": "AWS"
+    },
+    {
+      "type": "cloud",
+      "role": "Backup",
+      "region": "eu-west-2",
+      "id": "2348920489",
+      "name": "SAP AWS Hosting Account",
+      "provider": "AWS"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F001",
+      "type": "security",
+      "severity": "critical",
+      "title": "Unencrypted Database Backups",
+      "description": "Database backups are not encrypted at rest, potentially exposing sensitive data.",
+      "date": "2024-05-15",
+      "lastObserved": "2024-05-30",
+      "status": "open",
+      "remediation": "Enable encryption for all database backups using AWS KMS."
+    },
+    {
+      "id": "F002",
+      "type": "compliance",
+      "severity": "high",
+      "title": "Outdated TLS Version",
+      "description": "Application endpoints using TLS 1.1 which is deprecated.",
+      "date": "2024-05-20",
+      "lastObserved": "2024-05-30",
+      "status": "in-progress",
+      "remediation": "Upgrade all endpoints to use TLS 1.2 or higher."
+    },
+    {
+      "id": "F003",
+      "type": "performance",
+      "severity": "medium",
+      "title": "High Database CPU Usage",
+      "description": "Database CPU consistently above 80% during peak hours.",
+      "date": "2024-05-25",
+      "lastObserved": "2024-05-30",
+      "status": "open",
+      "remediation": "Optimize database queries and consider scaling up resources."
+    },
+    {
+      "id": "F004",
+      "type": "reliability",
+      "severity": "low",
+      "title": "Insufficient Monitoring Coverage",
+      "description": "Some background jobs lack proper monitoring and alerting.",
+      "date": "2024-05-28",
+      "lastObserved": "2024-05-30",
+      "status": "resolved",
+      "remediation": "Implement comprehensive monitoring for all background processes."
+    }
+  ],
+  "assessments": [
+    {
+      "name": "SOC2",
+      "type": "Standard",
+      "assesor": {
+        "type": "Extrnal",
+        "name": "SOC2 Auditors imc"
+      },
+      "date": "2025-01-01",
+      "expiry": "2026-01-01",
+      "findings": {
+        "high": 10,
+        "low": 1,
+        "medium": 1
+      },
+      "unresolved": {
+        "high": 1,
+        "low": 0
+      }
+    }
+  ],
+  "id": "ABC001",
+  "dataClassication": "Confidential",
+  "use": "Internal",
+  "source": "COTS",
+  "restores": [
+    {
+      "id": "1",
+      "database": "Staging",
+      "date": "2024-05-28",
+      "source": "Production (2024-05-27)",
+      "status": "completed",
+      "completedDate": "2024-05-28"
+    },
+    {
+      "id": "2",
+      "database": "Development",
+      "date": "2024-05-25",
+      "source": "Production (2024-05-24)",
+      "status": "completed",
+      "completedDate": "2024-05-25"
+    }
+  ],
+  "backups": [
+    {
+      "id": "1",
+      "database": "Production",
+      "date": "2024-05-30",
+      "size": "4.2 GB",
+      "status": "successful"
+    },
+    {
+      "id": "2",
+      "database": "Production",
+      "date": "2024-05-29",
+      "size": "4.1 GB",
+      "status": "successful"
+    },
+    {
+      "id": "3",
+      "database": "Staging",
+      "date": "2024-05-30",
+      "size": "2.7 GB",
+      "status": "failed",
+      "error": "Network timeout during backup process"
+    }
+  ],
+  "version": {
+    "number": "v1.0.0",
+    "released": "2025-01-01",
+    "deployed": "2025-01-02",
+    "gitTag": "release/1.0.0",
+    "repoName": "sap-erp",
+    "createdBy": "John Doe",
+    "authorizedBy": "Jane Smith"
+  },
+  "lifecycle": "Active",
+  "cost": {
+    "daily": 100,
+    "monthly": 3000,
+    "annual": 30000
+  },
+  "accessControl": {
+    "authentication": [
+      {
+        "type": "ldap",
+        "name": "Active Directory",
+        "mfa": {
+          "type": "Mobile",
+          "enforced": "On login"
+        },
+        "passwordPolicy": {
+          "expiry": "never",
+          "strength": "high"
+        }
+      },
+      {
+        "type": "oauth",
+        "name": "SAP SSO",
+        "mfa": {
+          "type": "Mobile",
+          "enforced": "On login, and every 2w"
+        },
+        "provider": "Azure Entra"
+      }
+    ],
+    "users": [
+      {
+        "id": "1",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "role": "Administrator",
+        "created": "2024-01-15",
+        "lastLogin": "2024-05-28",
+        "lastAccessReview": "2024-04-10"
+      },
+      {
+        "id": "2",
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "role": "Developer",
+        "created": "2024-02-22",
+        "lastLogin": "2024-05-30",
+        "lastAccessReview": "2024-04-10"
+      }
+    ],
+    "roles": []
+  },
+  "incidents": [
+    {
+      "id": "1",
+      "date": "2024-05-28",
+      "severity": "high",
+      "description": "API service outage affecting customer portal",
+      "status": "resolved",
+      "resolvedDate": "2024-05-28"
+    },
+    {
+      "id": "2",
+      "date": "2024-05-20",
+      "severity": "medium",
+      "description": "Elevated error rates in payment processing",
+      "status": "resolved",
+      "resolvedDate": "2024-05-21"
+    },
+    {
+      "id": "3",
+      "date": "2024-05-15",
+      "severity": "low",
+      "description": "Slow response times in reporting module",
+      "status": "resolved",
+      "resolvedDate": "2024-05-16"
+    }
+  ],
+  "changes": [
+    {
+      "id": "1",
+      "date": "2024-05-30",
+      "user": "John Doe",
+      "description": "Updated user permissions for finance module",
+      "status": "completed"
+    },
+    {
+      "id": "2",
+      "date": "2024-05-28",
+      "user": "Jane Smith",
+      "description": "Deployed v2.4.0 to production",
+      "status": "completed"
+    },
+    {
+      "id": "3",
+      "date": "2024-05-25",
+      "user": "Michael Brown",
+      "description": "Modified database schema for customers table",
+      "status": "failed"
+    }
+  ]
+}

@@ -15,9 +15,9 @@ declare global {
 
 const AuditReport: React.FC = () => {
   const reportRef = useRef<HTMLDivElement>(null);
-  const [application, setApplications] = useState<Application>();
+  const [application, setApplication] = useState<Application>();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
 
   const { apiEndpoint, setApiEndpoint } = useConfigManagement();
   const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
@@ -38,19 +38,17 @@ const AuditReport: React.FC = () => {
   }, [setApiEndpoint]);
 
   useEffect(() => {
-    if (apiEndpoint) {
-      setIsConfigModalOpen(false);
+    if (!apiEndpoint) {
+      setIsConfigModalOpen(true);
       setLoading(false);
+      return;
+    } else {
+      setIsConfigModalOpen(false);
     }
 
     const fetchData = async () => {
       try {
-        if (!apiEndpoint) {
-          setIsConfigModalOpen(true);
-          setLoading(false);
-          return;
-        }
-
+        setLoading(true);
         const response = await fetch(apiEndpoint, {
           credentials: "include"
         });
@@ -60,8 +58,8 @@ const AuditReport: React.FC = () => {
         }
 
         const data = await response.json();
-        setApplications(data);
-        window.__AUDIT_DATA__ = data; // Update global audit data
+        setApplication(data);
+        window.__AUDIT_DATA__ = [data]; // Update global audit data
         setLoading(false);
       } catch (err) {
         setError(
@@ -111,6 +109,17 @@ const AuditReport: React.FC = () => {
     } catch (error) {
       console.error("Error generating PDF:", error);
       alert("Failed to generate PDF. Please try again.");
+    }
+  };
+
+  const handleFileLoad = (data: string) => {
+    try {
+      const jsonData = JSON.parse(data);
+      setApplication(jsonData);
+      window.__AUDIT_DATA__ = [jsonData];
+      setError("");
+    } catch (error) {
+      setError("Invalid JSON file: " + error);
     }
   };
 
@@ -165,6 +174,7 @@ const AuditReport: React.FC = () => {
         onClose={() => setIsConfigModalOpen(false)}
         setApiEndpoint={setApiEndpoint}
         initialApiEndpoint={apiEndpoint}
+        onFileLoad={handleFileLoad}
       />
     </div>
   );
