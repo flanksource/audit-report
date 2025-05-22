@@ -1,6 +1,7 @@
 import React from "react";
 import { Application } from "../../types";
-import { Info, Shield, AlertTriangle, Globe, Box } from "lucide-react";
+import { Info } from "lucide-react";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
 
 interface ApplicationDetailsProps {
   application: Application;
@@ -9,6 +10,12 @@ interface ApplicationDetailsProps {
 const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
   application
 }) => {
+  // Filter properties that should be displayed in this section
+  const displayProperties =
+    application.properties
+      ?.filter((prop) => prop.label && (prop.text || prop.value))
+      .sort((a, b) => (a.order || 0) - (b.order || 0)) || [];
+
   return (
     <>
       <div>
@@ -16,37 +23,24 @@ const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
           <Info className="mr-2 text-teal-600" size={20} />
           Application Details
         </h3>
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="space-y-4">
-            <div>
-              <div className="mb-2 flex items-center text-sm text-gray-500">
-                <Shield className="mr-1.5 text-gray-400" size={16} />
-                Classification
+            {displayProperties.map((property, index) => (
+              <div key={index}>
+                <div className="mb-2 flex items-center text-sm text-gray-500">
+                  <DynamicIcon
+                    name={property.icon as IconName}
+                    color={property.color || "gray"}
+                    size={16}
+                  />
+                  &nbsp;&nbsp;{property.label}
+                </div>
+                <p className="text-sm">{property.text || property.value}</p>
               </div>
-              <p className="text-sm">{application.dataClassication}</p>
-            </div>
-            <div>
-              <div className="mb-2 flex items-center text-sm text-gray-500">
-                <AlertTriangle className="mr-1.5 text-gray-400" size={16} />
-                Criticality
-              </div>
-              <p className="text-sm">{application.criticality}</p>
-            </div>
-            <div>
-              <div className="mb-2 flex items-center text-sm text-gray-500">
-                <Globe className="mr-1.5 text-gray-400" size={16} />
-                Usage
-              </div>
-              <p className="text-sm">{application.use}</p>
-            </div>
-            <div>
-              <div className="mb-2 flex items-center text-sm text-gray-500">
-                <Box className="mr-1.5 text-gray-400" size={16} />
-                Source
-              </div>
-              <p className="text-sm">{application.source}</p>
-            </div>
+            ))}
           </div>
+
           <div className="space-y-4">
             <div>
               <div className="mb-2 flex items-center text-sm text-gray-500">
