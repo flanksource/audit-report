@@ -1,3 +1,5 @@
+import { IconName } from "lucide-react/dynamic";
+
 // Location Types
 export interface CloudLocation {
   type: "cloud";
@@ -102,29 +104,47 @@ export interface AccessControl {
   roles?: string[];
 }
 
+export interface Link {
+  // Placeholder for types.Link
+  [key: string]: any;
+}
+
+export interface Property {
+  label: string;
+  tooltip?: string;
+  icon?: IconName;
+  text?: string;
+  order?: number;
+  type?: string;
+  color?: string;
+  value?: number;
+  links?: Link[];
+  unit?: string;
+}
+
+export type Properties = Property[];
+
 export interface Application {
+  id?: string;
   name: string;
   type: string;
   description: string;
-  criticality: string;
-  locations?: CloudLocation[];
-  assessments?: Assessment[];
-  id?: string;
-  dataClassication?: string;
-  use?: string;
-  source?: string;
-  restores?: Restore[];
-  backups?: Backup[];
-  version?: Version;
-  repositories?: Repository[];
-  lifecycle?: string;
-  cost?: Cost;
+  properties?: Properties;
+
   accessControl: AccessControl;
-  incidents?: Incident[];
+  assessments?: Assessment[];
+  backups?: Backup[];
   changes?: Change[];
+  cost?: Cost;
   findings?: Finding[];
+  incidents?: Incident[];
+  lifecycle?: string;
+  locations?: CloudLocation[];
   monitoring?: MonitoringMetrics;
   pipelines?: Pipeline[];
+  repositories?: Repository[];
+  restores?: Restore[];
+  version?: Version;
 }
 
 export interface User {

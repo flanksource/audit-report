@@ -2,6 +2,37 @@
   "name": "SAP",
   "type": "ERP",
   "description": "SAP ERP for warehouse division",
+  "properties": [
+    {
+      "label": "Classification",
+      "text": "Confidential",
+      "type": "text",
+      "icon": "shield",
+      "order": 1
+    },
+    {
+      "label": "Criticality",
+      "text": "High",
+      "type": "text",
+      "icon": "alert-triangle",
+      "color": "red",
+      "order": 2
+    },
+    {
+      "label": "Source",
+      "text": "COTS",
+      "type": "text",
+      "icon": "box",
+      "order": 4
+    },
+    {
+      "label": "Usage",
+      "text": "Internal",
+      "type": "text",
+      "icon": "globe",
+      "order": 3
+    }
+  ],
   "pipelines": [
     {
       "name": "SAP ERP Core Build",
@@ -34,7 +65,6 @@
       "environment": "production"
     }
   ],
-  "criticality": "High",
   "repositories": [
     {
       "type": "GitHub",
@@ -176,9 +206,6 @@
     }
   ],
   "id": "ABC001",
-  "dataClassication": "Confidential",
-  "use": "Internal",
-  "source": "COTS",
   "restores": [
     {
       "id": "1",
