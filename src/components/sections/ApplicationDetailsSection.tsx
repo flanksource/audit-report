@@ -30,11 +30,12 @@ const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
               <div key={index}>
                 <div className="mb-2 flex items-center text-sm text-gray-500">
                   <DynamicIcon
-                    name={property.icon as IconName}
+                    name={(property.icon as IconName) || "info"}
+                    className="mr-1.5 "
                     color={property.color || "gray"}
                     size={16}
                   />
-                  &nbsp;&nbsp;{property.label}
+                  {property.label}
                 </div>
                 <p className="text-sm">{property.text || property.value}</p>
               </div>
