@@ -123,7 +123,7 @@
   "locations": [
     {
       "type": "cloud",
-      "role": "primary",
+      "purpose": "primary",
       "region": "eu-west-1",
       "id": "2348920489",
       "name": "SAP AWS Hosting Account",
@@ -131,7 +131,7 @@
     },
     {
       "type": "cloud",
-      "role": "Backup",
+      "purpose": "Backup",
       "region": "eu-west-2",
       "id": "2348920489",
       "name": "SAP AWS Hosting Account",

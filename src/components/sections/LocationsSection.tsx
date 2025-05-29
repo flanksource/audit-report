@@ -28,7 +28,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
           >
             <span className="absolute right-2 top-2 inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
               <Tag size={12} className="mr-1" />
-              {location.role}
+              {location.purpose}
             </span>
             <div className="mt-2 flex items-center gap-2">
               <Icon
@@ -42,7 +42,7 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
                 </div>
                 <div className="mt-1 text-sm text-gray-600">
                   <span className="mr-4">Region: {location.region}</span>
-                  <span>ID: {location.id}</span>
+                  {location.id && <span>ID: {location.id}</span>}
                 </div>
               </div>
             </div>
