@@ -52,7 +52,7 @@ const ApplicationAccessControl: React.FC<AccessControlProps> = ({
         </h3>
 
         <div className="space-y-6">
-          <DataTable columns={userColumns} data={accessControl.users} />
+          <DataTable columns={userColumns} data={accessControl.users || []} />
 
           {accessControl.authentication && (
             <div>

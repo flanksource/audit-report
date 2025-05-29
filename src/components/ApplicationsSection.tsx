@@ -75,6 +75,8 @@ const renderLegend = (props: any) => {
   );
 };
 
+const successStatuses = ["successful", "completed"];
+
 const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
   application,
   printView
@@ -86,8 +88,8 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
       return acc + size;
     }, 0);
 
-    const successCount = backups.filter(
-      (b) => b.status === "successful"
+    const successCount = backups.filter((b) =>
+      successStatuses.includes(b.status.toLowerCase())
     ).length;
     const successRate = (successCount / backups.length) * 100;
 
@@ -249,6 +251,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <StatusBadge status={value as any} printView={printView} />
       )
     },
+    { header: "Source", accessor: "source" },
     {
       header: "Error",
       accessor: "error",

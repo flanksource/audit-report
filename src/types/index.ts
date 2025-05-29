@@ -100,7 +100,7 @@ export interface Authentication {
 
 export interface AccessControl {
   authentication?: Authentication[];
-  users: User[];
+  users?: User[];
   roles?: string[];
 }
 
