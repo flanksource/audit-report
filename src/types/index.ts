@@ -3,9 +3,9 @@ import { IconName } from "lucide-react/dynamic";
 // Location Types
 export interface CloudLocation {
   type: "cloud";
-  role: string;
+  purpose: string;
   region: string;
-  id: string;
+  id?: string;
   name: string;
   provider: string;
 }
