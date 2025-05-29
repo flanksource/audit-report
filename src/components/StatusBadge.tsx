@@ -26,7 +26,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
   const getStatusColor = (
     status: StatusType
   ): { bg: string; dot: string; text: string } => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case "completed":
       case "resolved":
       case "successful":
