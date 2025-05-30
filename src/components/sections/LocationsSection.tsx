@@ -27,27 +27,36 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
             key={index}
             className="relative max-w-md rounded-lg border border-gray-200 bg-gray-50 p-4"
           >
-            <span className="absolute right-2 top-2 inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
-              <Tag size={12} className="mr-1" />
-              {location.purpose}
-            </span>
-
-            <div className="mt-2">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
                 <Icon
                   name={location.provider.toLowerCase()}
                   className="h-5 w-5 text-gray-500"
                 />
                 <span className="font-medium">{location.name}</span>
                 <span className="text-gray-500">{location.provider}</span>
-                {location.id && <span className="mr-4">ID: {location.id}</span>}
               </div>
 
-              <div className="mt-1 text-sm text-gray-600 grid grid-cols-[auto_max-content_1fr] gap-x-2 gap-y-1 items-center">
+              <span className="inline-flex shrink-0 items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                <Tag size={12} className="mr-1" />
+                {location.purpose}
+              </span>
+            </div>
+
+            <div className="mt-2">
+              <div className="mt-1 grid grid-cols-[auto_max-content_1fr] items-center gap-x-2 gap-y-1 text-sm text-gray-600">
+                {location.id && (
+                  <>
+                    <Tag size={12} className="text-gray-400" />
+                    <span className="text-gray-500">ID:</span>
+                    <span className="text-gray-700">{location.id}</span>
+                  </>
+                )}
+
                 <MapPin size={12} className="text-gray-400" />
                 <span className="text-gray-500">Region:</span>
                 <span className="text-gray-700">{location.region}</span>
-                
+
                 <Server size={12} className="text-gray-400" />
                 <span className="text-gray-500">Resources:</span>
                 <span className="text-gray-700">
