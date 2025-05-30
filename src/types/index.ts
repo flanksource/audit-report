@@ -1,13 +1,14 @@
 import { IconName } from "lucide-react/dynamic";
 
 // Location Types
-export interface CloudLocation {
-  type: "cloud";
+export interface Location {
+  type: "cloud" | "on-premise" | "hybrid" | "multi-cloud";
   purpose: string;
   region: string;
   id?: string;
   name: string;
   provider: string;
+  resourceCount: number;
 }
 
 export interface MonitoringTool {
@@ -139,7 +140,7 @@ export interface Application {
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
-  locations?: CloudLocation[];
+  locations?: Location[];
   monitoring?: MonitoringMetrics;
   pipelines?: Pipeline[];
   repositories?: Repository[];

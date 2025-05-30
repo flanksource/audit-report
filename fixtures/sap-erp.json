@@ -127,7 +127,8 @@
       "region": "eu-west-1",
       "id": "2348920489",
       "name": "SAP AWS Hosting Account",
-      "provider": "AWS"
+      "provider": "AWS",
+      "resourceCount": 250
     },
     {
       "type": "cloud",
@@ -135,7 +136,8 @@
       "region": "eu-west-2",
       "id": "2348920489",
       "name": "SAP AWS Hosting Account",
-      "provider": "AWS"
+      "provider": "AWS",
+      "resourceCount": 37
     }
   ],
   "findings": [

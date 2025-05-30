@@ -533,7 +533,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <FindingsSection application={application} printView={printView} />
         <MonitoringSection application={application} />
         <VersionSection application={application} />
-        <LocationsSection application={application} />
+        <LocationsSection locations={application.locations || []} />
 
         {application.pipelines && (
           <div>

@@ -1,16 +1,16 @@
 import React from "react";
-import { Cloud, Tag } from "lucide-react";
+import { Cloud, Tag, Server, MapPin } from "lucide-react";
 import { Icon } from "../Icon";
-import { Application } from "../../types";
+import { Location } from "../../types";
 
 interface LocationsSectionProps {
-  application: Application;
+  locations: Location[];
 }
 
 export const LocationsSection: React.FC<LocationsSectionProps> = ({
-  application
+  locations
 }) => {
-  if (!application.locations || application.locations.length === 0) {
+  if (locations.length === 0) {
     return null;
   }
 
@@ -20,8 +20,9 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
         <Cloud className="mr-2 text-teal-600" size={20} />
         Locations
       </h3>
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {(application.locations || []).map((location, index) => (
+        {locations.map((location, index) => (
           <div
             key={index}
             className="relative max-w-md rounded-lg border border-gray-200 bg-gray-50 p-4"
@@ -30,20 +31,28 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
               <Tag size={12} className="mr-1" />
               {location.purpose}
             </span>
-            <div className="mt-2 flex items-center gap-2">
-              <Icon
-                name={location.provider.toLowerCase()}
-                className="h-5 w-5 text-gray-500"
-              />
-              <div className="flex-grow">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{location.name}</span>
-                  <span className="text-gray-500">({location.provider})</span>
-                </div>
-                <div className="mt-1 text-sm text-gray-600">
-                  <span className="mr-4">Region: {location.region}</span>
-                  {location.id && <span>ID: {location.id}</span>}
-                </div>
+
+            <div className="mt-2">
+              <div className="flex items-center gap-2">
+                <Icon
+                  name={location.provider.toLowerCase()}
+                  className="h-5 w-5 text-gray-500"
+                />
+                <span className="font-medium">{location.name}</span>
+                <span className="text-gray-500">{location.provider}</span>
+                {location.id && <span className="mr-4">ID: {location.id}</span>}
+              </div>
+
+              <div className="mt-1 text-sm text-gray-600 grid grid-cols-[auto_max-content_1fr] gap-x-2 gap-y-1 items-center">
+                <MapPin size={12} className="text-gray-400" />
+                <span className="text-gray-500">Region:</span>
+                <span className="text-gray-700">{location.region}</span>
+                
+                <Server size={12} className="text-gray-400" />
+                <span className="text-gray-500">Resources:</span>
+                <span className="text-gray-700">
+                  {location.resourceCount.toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
