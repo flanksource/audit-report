@@ -45,11 +45,11 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
 
             <div className="mt-2">
               <div className="mt-1 grid grid-cols-[auto_max-content_1fr] items-center gap-x-2 gap-y-1 text-sm text-gray-600">
-                {location.id && (
+                {location.account && (
                   <>
                     <Tag size={12} className="text-gray-400" />
-                    <span className="text-gray-500">ID:</span>
-                    <span className="text-gray-700">{location.id}</span>
+                    <span className="text-gray-500">Account:</span>
+                    <span className="text-gray-700">{location.account}</span>
                   </>
                 )}
 

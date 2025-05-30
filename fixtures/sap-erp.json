@@ -125,7 +125,7 @@
       "type": "cloud",
       "purpose": "primary",
       "region": "eu-west-1",
-      "id": "2348920489",
+      "account": "2348920489",
       "name": "SAP AWS Hosting Account",
       "provider": "AWS",
       "resourceCount": 250
@@ -134,7 +134,7 @@
       "type": "cloud",
       "purpose": "Backup",
       "region": "eu-west-2",
-      "id": "2348920489",
+      "account": "2348920489",
       "name": "SAP AWS Hosting Account",
       "provider": "AWS",
       "resourceCount": 37

@@ -5,7 +5,7 @@ export interface Location {
   type: "cloud" | "on-premise" | "hybrid" | "multi-cloud";
   purpose: string;
   region: string;
-  id?: string;
+  account?: string;
   name: string;
   provider: string;
   resourceCount: number;
