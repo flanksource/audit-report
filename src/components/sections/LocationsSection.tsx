@@ -33,26 +33,24 @@ export const LocationsSection: React.FC<LocationsSectionProps> = ({
                   name={location.provider.toLowerCase()}
                   className="h-5 w-5 text-gray-500"
                 />
-                <span className="font-medium">{location.name}</span>
-                <span className="text-gray-500">{location.provider}</span>
+                <span className="font-medium">{location.account}</span>
               </div>
 
-              <span className="inline-flex shrink-0 items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
-                <Tag size={12} className="mr-1" />
-                {location.purpose}
-              </span>
+              <div className="flex shrink-0 items-center gap-2">
+                <span className="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                  <Tag size={12} className="mr-1" />
+                  {location.purpose}
+                </span>
+
+                <span className="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                  <Tag size={12} className="mr-1" />
+                  {location.name}
+                </span>
+              </div>
             </div>
 
             <div className="mt-2">
               <div className="mt-1 grid grid-cols-[auto_max-content_1fr] items-center gap-x-2 gap-y-1 text-sm text-gray-600">
-                {location.account && (
-                  <>
-                    <Tag size={12} className="text-gray-400" />
-                    <span className="text-gray-500">Account:</span>
-                    <span className="text-gray-700">{location.account}</span>
-                  </>
-                )}
-
                 <MapPin size={12} className="text-gray-400" />
                 <span className="text-gray-500">Region:</span>
                 <span className="text-gray-700">{location.region}</span>
