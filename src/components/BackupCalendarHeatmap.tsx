@@ -24,10 +24,23 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
   backups,
   className = ""
 }) => {
-  const heatmapData = useMemo((): HeatmapValue[] => {
-    const backupMap = new Map<string, HeatmapValue>();
+  const backupsByDatabase = useMemo(() => {
+    const databaseMap = new Map<string, Backup[]>();
 
     backups.forEach((backup) => {
+      if (!databaseMap.has(backup.database)) {
+        databaseMap.set(backup.database, []);
+      }
+      databaseMap.get(backup.database)!.push(backup);
+    });
+
+    return databaseMap;
+  }, [backups]);
+
+  const createHeatmapData = (databaseBackups: Backup[]): HeatmapValue[] => {
+    const backupMap = new Map<string, HeatmapValue>();
+
+    databaseBackups.forEach((backup) => {
       try {
         const date = new Date(backup.date).toLocaleDateString("en-US", {
           year: "numeric",
@@ -56,7 +69,7 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
     });
 
     return Array.from(backupMap.values());
-  }, [backups]);
+  };
 
   const dateRange = useMemo(() => {
     const endDate = new Date();
@@ -138,15 +151,29 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <CalendarHeatmap
-          startDate={dateRange.startDate}
-          endDate={dateRange.endDate}
-          gutterSize={3}
-          values={heatmapData}
-          classForValue={getClassForValue}
-          tooltipDataAttrs={getTooltipDataAttrs}
-        />
+      <div className="space-y-6">
+        {Array.from(backupsByDatabase.entries()).map(
+          ([database, databaseBackups]) => {
+            const heatmapData = createHeatmapData(databaseBackups);
+            return (
+              <div key={database} className="space-y-2">
+                <h5 className="text-md font-medium text-gray-600">
+                  {database}
+                </h5>
+                <div className="overflow-x-auto">
+                  <CalendarHeatmap
+                    startDate={dateRange.startDate}
+                    endDate={dateRange.endDate}
+                    gutterSize={3}
+                    values={heatmapData}
+                    classForValue={getClassForValue}
+                    tooltipDataAttrs={getTooltipDataAttrs}
+                  />
+                </div>
+              </div>
+            );
+          }
+        )}
       </div>
       <Tooltip id="backup-tooltip" />
     </div>
