@@ -3,6 +3,7 @@ import CalendarHeatmap, {
   ReactCalendarHeatmapValue
 } from "react-calendar-heatmap";
 import { Backup } from "../types";
+import { Tooltip } from "react-tooltip";
 
 import "./heatmap.css";
 
@@ -73,6 +74,23 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
     }
   };
 
+  const getTooltipDataAttrs = (
+    value: ReactCalendarHeatmapValue<string> | undefined
+  ) => {
+    if (!value || !value.date) {
+      return {
+        "data-tooltip-content": `No backups`,
+        "data-tooltip-id": "backup-tooltip"
+      };
+    }
+
+    const total = value.successful + value.failed;
+    return {
+      "data-tooltip-content": `${value.date}: ${value.successful} successful, ${value.failed} failed (${total} total)`,
+      "data-tooltip-id": "backup-tooltip"
+    };
+  };
+
   return (
     <div className={`backup-heatmap ${className}`}>
       <div className="mb-4">
@@ -106,8 +124,10 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
           gutterSize={3}
           values={heatmapData}
           classForValue={getClassForValue}
+          tooltipDataAttrs={getTooltipDataAttrs}
         />
       </div>
+      <Tooltip id="backup-tooltip" />
     </div>
   );
 };
