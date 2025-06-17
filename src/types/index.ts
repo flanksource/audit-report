@@ -191,7 +191,7 @@ export interface Backup {
   database: string;
   date: string;
   size: string;
-  status: "successful" | "failed";
+  status: "Successful" | "Completed" | "Failed";
   error?: string;
 }
 

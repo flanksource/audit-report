@@ -14,6 +14,7 @@ import { formatDate } from "../utils";
 import { formatDistanceToNow, differenceInHours } from "date-fns";
 import DataTable from "./DataTable";
 import StatusBadge from "./StatusBadge";
+import { BackupCalendarHeatmap } from "./BackupCalendarHeatmap";
 import { Application, Backup, Incident } from "../types";
 import {
   PieChart,
@@ -494,6 +495,10 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
                     </p>
                   </div>
                 </div>
+                <BackupCalendarHeatmap
+                  backups={application.backups}
+                  className="mb-6"
+                />
                 <DataTable columns={backupColumns} data={application.backups} />
               </div>
             </div>

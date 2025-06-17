@@ -230,24 +230,31 @@
     {
       "id": "1",
       "database": "Production",
-      "date": "2024-05-30",
+      "date": "2025-06-10",
       "size": "4.2 GB",
       "status": "successful"
     },
     {
       "id": "2",
       "database": "Production",
-      "date": "2024-05-29",
+      "date": "2025-06-11",
       "size": "4.1 GB",
       "status": "successful"
     },
     {
       "id": "3",
       "database": "Staging",
-      "date": "2024-05-30",
+      "date": "2025-06-12",
       "size": "2.7 GB",
       "status": "failed",
       "error": "Network timeout during backup process"
+    },
+    {
+      "id": "4",
+      "database": "Staging",
+      "date": "2025-06-17",
+      "size": "2.7 GB",
+      "status": "completed"
     }
   ],
   "version": {
