@@ -495,7 +495,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
                     </p>
                   </div>
                 </div>
-                <BackupCalendarHeatmap 
+                <BackupCalendarHeatmap
                   backups={application.backups}
                   className="mb-6"
                 />

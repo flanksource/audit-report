@@ -18,6 +18,8 @@ interface HeatmapValue {
   failed: number;
 }
 
+const successStatuses = ["successful", "completed"];
+
 export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
   backups,
   className = ""
@@ -38,7 +40,7 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
       }
 
       const entry = backupMap.get(date)!;
-      if (["Successful", "Completed"].includes(backup.status)) {
+      if (successStatuses.includes(backup.status.toLowerCase())) {
         entry.successful += 1;
       } else {
         entry.failed += 1;
