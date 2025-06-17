@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import CalendarHeatmap, {
   ReactCalendarHeatmapValue
 } from "react-calendar-heatmap";
@@ -12,60 +12,74 @@ interface BackupCalendarHeatmapProps {
   className?: string;
 }
 
-interface HeatmapValue {
+interface HeatmapValue extends ReactCalendarHeatmapValue<string> {
   date: string;
   successful: number;
   failed: number;
 }
 
-const successStatuses = ["successful", "completed"];
+const SUCCESS_STATUSES = ["successful", "completed"];
 
 export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
   backups,
   className = ""
 }) => {
-  // Process backup data for heatmap
-  const processBackupData = (): HeatmapValue[] => {
+  const heatmapData = useMemo((): HeatmapValue[] => {
     const backupMap = new Map<string, HeatmapValue>();
 
     backups.forEach((backup) => {
-      const date = backup.date.split("T")[0]; // Get date part only
-
-      if (!backupMap.has(date)) {
-        backupMap.set(date, {
-          date,
-          successful: 0,
-          failed: 0
+      try {
+        const date = new Date(backup.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
         });
-      }
+        if (!backupMap.has(date)) {
+          backupMap.set(date, {
+            date,
+            successful: 0,
+            failed: 0
+          });
+        }
 
-      const entry = backupMap.get(date)!;
-      if (successStatuses.includes(backup.status.toLowerCase())) {
-        entry.successful += 1;
-      } else {
-        entry.failed += 1;
+        const entry = backupMap.get(date);
+        if (entry) {
+          if (SUCCESS_STATUSES.includes(backup.status.toLowerCase())) {
+            entry.successful += 1;
+          } else {
+            entry.failed += 1;
+          }
+        }
+      } catch (error) {
+        console.warn(`Error processing backup date: ${backup.date}`, error);
       }
     });
 
     return Array.from(backupMap.values());
-  };
+  }, [backups]);
 
-  const heatmapData = processBackupData();
-
-  // Calculate date range (last 365 days)
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setFullYear(endDate.getFullYear() - 1);
+  const dateRange = useMemo(() => {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setFullYear(endDate.getFullYear() - 1);
+    return { startDate, endDate };
+  }, []);
 
   const getClassForValue = (
     value: ReactCalendarHeatmapValue<string> | undefined
   ) => {
-    if (!value || value.count === 0) {
+    if (!value) {
       return "fill-gray-100";
     }
 
-    // Color based on success rate and frequency
-    const successRate = value.successful / (value.successful + value.failed);
+    const heatmapValue = value as HeatmapValue;
+    const totalBackups = heatmapValue.successful + heatmapValue.failed;
+
+    if (totalBackups === 0) {
+      return "fill-gray-100";
+    }
+
+    const successRate = heatmapValue.successful / totalBackups;
 
     if (successRate === 1) {
       return "fill-green-200";
@@ -81,14 +95,19 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
   ) => {
     if (!value || !value.date) {
       return {
-        "data-tooltip-content": `No backups`,
+        "data-tooltip-content": "No backups",
         "data-tooltip-id": "backup-tooltip"
       };
     }
 
-    const total = value.successful + value.failed;
+    const heatmapValue = value as HeatmapValue;
+    const total = heatmapValue.successful + heatmapValue.failed;
+    const date = new Date(value.date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric"
+    });
     return {
-      "data-tooltip-content": `${value.date}: ${value.successful} successful, ${value.failed} failed (${total} total)`,
+      "data-tooltip-content": `${date}: ${heatmapValue.successful} successful, ${heatmapValue.failed} failed (${total} total)`,
       "data-tooltip-id": "backup-tooltip"
     };
   };
@@ -121,8 +140,8 @@ export const BackupCalendarHeatmap: React.FC<BackupCalendarHeatmapProps> = ({
 
       <div className="overflow-x-auto">
         <CalendarHeatmap
-          startDate={startDate}
-          endDate={endDate}
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
           gutterSize={3}
           values={heatmapData}
           classForValue={getClassForValue}
