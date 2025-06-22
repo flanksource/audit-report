@@ -366,5 +366,31 @@
       "description": "Modified database schema for customers table",
       "status": "failed"
     }
-  ]
+  ],
+  "deployments": {
+    "columns": [
+      {
+        "name": "repo",
+        "type": "string",
+        "description": "The repository name."
+      }
+    ],
+    "rows": [
+      [
+        "InstallSucceeded: Helm install succeeded for release default/ittools.v1 with chart app-template@4.0.1"
+      ],
+      [
+        "UpgradeSucceeded: Helm upgrade succeeded for release default/homepage.v4 with chart app-template@4.0.1"
+      ],
+      [
+        "InstallSucceeded: Helm install succeeded for release default/freshrss.v1 with chart app-template@4.0.1"
+      ],
+      [
+        "UpgradeSucceeded: Helm upgrade succeeded for release system/reloader.v13 with chart reloader@2.1.3"
+      ],
+      [
+        "UpgradeSucceeded: Helm upgrade succeeded for release nginx-ingress/nginx-ingress.v9 with chart ingress-nginx@4.12.2"
+      ]
+    ]
+  }
 }

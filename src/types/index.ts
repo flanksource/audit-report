@@ -137,6 +137,7 @@ export interface Application {
   backups?: Backup[];
   changes?: Change[];
   cost?: Cost;
+  deployments?: DynamicTable;
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
@@ -202,4 +203,17 @@ export interface Restore {
   source: string;
   status: "completed" | "in-progress" | "failed";
   completedDate?: string;
+}
+
+export interface ViewColumnDef {
+  name: string;
+  type: "string" | "number" | "boolean" | "datetime";
+  description?: string;
+}
+
+type ViewRow = any[];
+
+export interface DynamicTable {
+  columns: ViewColumnDef[];
+  rows: ViewRow[];
 }

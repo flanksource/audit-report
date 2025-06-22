@@ -7,12 +7,14 @@ import {
   AlertOctagon,
   FileSearch,
   Timer,
-  GitPullRequest
+  GitPullRequest,
+  Rocket
 } from "lucide-react";
 import { formatDate } from "../utils";
 
 import { formatDistanceToNow, differenceInHours } from "date-fns";
 import DataTable from "./DataTable";
+import DynamicDataTable from "./DynamicDataTable";
 import StatusBadge from "./StatusBadge";
 import { BackupCalendarHeatmap } from "./BackupCalendarHeatmap";
 import { Application, Backup, Incident } from "../types";
@@ -538,7 +540,6 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <FindingsSection application={application} printView={printView} />
         <MonitoringSection application={application} />
         <VersionSection application={application} />
-        <LocationsSection locations={application.locations || []} />
 
         {application.pipelines && (
           <div>
@@ -623,6 +624,23 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
             </div>
           </div>
         )}
+
+        {application.deployments && (
+          <div>
+            <h3 className="mb-4 flex items-center text-xl font-semibold">
+              <Rocket className="mr-2 text-teal-600" size={20} />
+              Deployments
+            </h3>
+            <div className="space-y-6">
+              <DynamicDataTable
+                columns={application.deployments.columns}
+                rows={application.deployments.rows}
+              />
+            </div>
+          </div>
+        )}
+
+        <LocationsSection locations={application.locations || []} />
       </div>
     </div>
   );
