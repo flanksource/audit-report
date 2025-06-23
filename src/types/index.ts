@@ -143,7 +143,7 @@ export interface Application {
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  pipelines?: Pipeline[];
+  pipelines?: DynamicTable;
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;

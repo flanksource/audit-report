@@ -33,38 +33,6 @@
       "order": 3
     }
   ],
-  "pipelines": [
-    {
-      "name": "SAP ERP Core Build",
-      "lastRun": "2024-05-30T10:15:00Z",
-      "lastRunBy": "John Doe",
-      "gitTag": "release/1.0.0",
-      "status": "success",
-      "repository": "sap-erp-core",
-      "duration": "12m 30s",
-      "environment": "production"
-    },
-    {
-      "name": "Frontend Deploy",
-      "lastRun": "2024-05-30T09:45:00Z",
-      "lastRunBy": "Jane Smith",
-      "gitTag": "v2.4.0",
-      "status": "running",
-      "repository": "sap-erp-frontend",
-      "duration": "8m 15s",
-      "environment": "staging"
-    },
-    {
-      "name": "Infrastructure Update",
-      "lastRun": "2024-05-29T15:20:00Z",
-      "lastRunBy": "Michael Brown",
-      "gitTag": "infra/v1.2.0",
-      "status": "failed",
-      "repository": "sap-erp-infrastructure",
-      "duration": "15m 45s",
-      "environment": "production"
-    }
-  ],
   "repositories": [
     {
       "type": "GitHub",
@@ -370,26 +338,129 @@
   "deployments": {
     "columns": [
       {
-        "name": "repo",
+        "name": "application",
         "type": "string",
-        "description": "The repository name."
+        "description": "The application name."
+      },
+      {
+        "name": "namespace",
+        "type": "string",
+        "description": "The namespace name."
+      },
+      {
+        "name": "chart",
+        "type": "string",
+        "description": "The chart name."
+      },
+      {
+        "name": "version",
+        "type": "string",
+        "description": "The version of the deployment."
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "description": "The status of the deployment."
+      },
+      {
+        "name": "health",
+        "type": "string",
+        "description": "The health of the deployment."
+      },
+      {
+        "name": "lastUpdated",
+        "type": "datetime",
+        "description": "The last updated time."
       }
     ],
     "rows": [
       [
-        "InstallSucceeded: Helm install succeeded for release default/ittools.v1 with chart app-template@4.0.1"
+        "alertmanager",
+        "monitoring",
+        "app-template",
+        "4.0.1",
+        "InstallSucceeded",
+        "healthy",
+        "2025-06-20T11:37:50.248793+05:45"
       ],
       [
-        "UpgradeSucceeded: Helm upgrade succeeded for release default/homepage.v4 with chart app-template@4.0.1"
+        "alloy",
+        "monitoring",
+        "alloy",
+        "1.0.2",
+        "UpgradeSucceeded",
+        "healthy",
+        "2025-06-20T11:37:50.248793+05:45"
       ],
       [
-        "InstallSucceeded: Helm install succeeded for release default/freshrss.v1 with chart app-template@4.0.1"
+        "grafana",
+        "monitoring",
+        "grafana",
+        "9.0.0",
+        "UpgradeSucceeded",
+        "healthy",
+        "2025-06-20T11:37:50.248793+05:45"
       ],
       [
-        "UpgradeSucceeded: Helm upgrade succeeded for release system/reloader.v13 with chart reloader@2.1.3"
+        "kube-prometheus-stack",
+        "monitoring",
+        "kube-prometheus-stack",
+        "72.1.0",
+        "UpgradeSucceeded",
+        "healthy",
+        "2025-06-20T11:37:50.248793+05:45"
+      ]
+    ]
+  },
+  "pipelines": {
+    "columns": [
+      {
+        "name": "name",
+        "type": "string",
+        "description": "The name of the pipeline."
+      },
+      {
+        "name": "lastRun",
+        "type": "datetime",
+        "description": "The namespace name."
+      },
+      {
+        "name": "lastRunBy",
+        "type": "string",
+        "description": "The chart name."
+      },
+      {
+        "name": "repository",
+        "type": "string",
+        "description": "The repository of the pipeline."
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "description": "The status of the pipeline."
+      }
+    ],
+    "rows": [
+      [
+        "Create Release",
+        "2025-03-26T13:30:38Z",
+        "moshloop",
+        "flanksource/duty",
+        "success"
       ],
       [
-        "UpgradeSucceeded: Helm upgrade succeeded for release nginx-ingress/nginx-ingress.v9 with chart ingress-nginx@4.12.2"
+        "Create Release",
+        "2025-04-29T12:04:11Z",
+        "moshloop",
+        "flanksource/mission-control",
+        "success"
+      ],
+      [
+        "Create Release",
+        "2025-04-04T09:05:56Z",
+        "flankbot",
+        "flanksource/canary-checker",
+        "success"
       ]
     ]
   }
