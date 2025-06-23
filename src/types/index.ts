@@ -207,7 +207,7 @@ export interface Restore {
 
 export interface ViewColumnDef {
   name: string;
-  type: "string" | "number" | "boolean" | "datetime";
+  type: "string" | "number" | "boolean" | "datetime" | "duration";
   description?: string;
 }
 

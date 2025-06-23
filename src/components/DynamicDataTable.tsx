@@ -2,6 +2,7 @@ import React from "react";
 import { ViewColumnDef } from "../types";
 import { formatDate } from "../utils";
 import DataTable from "./DataTable";
+import { formatDuration, intervalToDuration } from "date-fns";
 
 interface DynamicDataTableProps {
   columns: ViewColumnDef[];
@@ -45,6 +46,18 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
         return typeof value === "number"
           ? value.toLocaleString()
           : String(value);
+      case "duration": {
+        if (typeof value !== "number") {
+          return String(value);
+        }
+        // value is in nanoseconds, intervalToDuration expects milliseconds.
+        const duration = intervalToDuration({
+          start: 0,
+          end: value / 1_000_000
+        });
+        const formatted = formatDuration(duration);
+        return formatted || "0s";
+      }
       case "string":
       default:
         return String(value);
