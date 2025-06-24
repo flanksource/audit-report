@@ -84,6 +84,8 @@ const renderLegend = (props: any) => {
 const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
   const pieChartSummaries =
     view.summaries?.filter((summary) => summary.type === "piechart") || [];
+  const numberSummaries =
+    view.summaries?.filter((summary) => summary.type === "number") || [];
 
   return (
     <div>
@@ -92,6 +94,37 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
         {title}
       </h3>
       <div className="space-y-6">
+        {numberSummaries.length > 0 && (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {numberSummaries.flatMap((summary) =>
+              summary.rows.map((row, rowIndex) => {
+                const { value, ...rest } = row;
+                const labelKey = Object.keys(rest)[0];
+                const labelValue = rest[labelKey];
+
+                return (
+                  <div
+                    key={`${summary.name}-${rowIndex}`}
+                    className="rounded-lg border border-gray-200 bg-gray-50 p-4"
+                  >
+                    <h4 className="mb-2 text-sm font-medium capitalize text-gray-600">
+                      {labelValue}
+                    </h4>
+                    {summary.description && (
+                      <p className="mb-3 text-xs text-gray-500">
+                        {summary.description}
+                      </p>
+                    )}
+                    <p className="text-2xl font-semibold text-teal-600">
+                      {value}
+                    </p>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        )}
+
         {pieChartSummaries.length > 0 && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pieChartSummaries.map((summary, index) => {
@@ -118,7 +151,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                           data={chartData}
                           dataKey="value"
                           nameKey="name"
-                          label={{ fontSize: 10, fill: '#374151' }}
+                          label={{ fontSize: 10, fill: "#374151" }}
                         >
                           {chartData.map((_, entryIndex) => (
                             <Cell
