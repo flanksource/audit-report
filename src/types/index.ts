@@ -137,13 +137,13 @@ export interface Application {
   backups?: Backup[];
   changes?: Change[];
   cost?: Cost;
-  deployments?: DynamicTable;
+  deployments?: ViewResult;
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  pipelines?: DynamicTable;
+  pipelines?: ViewResult;
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;
@@ -213,7 +213,15 @@ export interface ViewColumnDef {
 
 type ViewRow = any[];
 
-export interface DynamicTable {
-  columns: ViewColumnDef[];
-  rows: ViewRow[];
+export interface ViewResult {
+  columns?: ViewColumnDef[];
+  rows?: ViewRow[];
+  summaries?: SummaryResult[];
 }
+
+type SummaryResult = {
+  name: string;
+  type: "piechart" | "custom";
+  description?: string;
+  rows: Record<string, any>[];
+};

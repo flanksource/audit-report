@@ -13,7 +13,6 @@ import { formatDate } from "../utils";
 
 import { formatDistanceToNow, differenceInHours } from "date-fns";
 import DataTable from "./DataTable";
-import DynamicDataTable from "./DynamicDataTable";
 import StatusBadge from "./StatusBadge";
 import { BackupCalendarHeatmap } from "./BackupCalendarHeatmap";
 import { Application, Backup, Incident } from "../types";
@@ -32,6 +31,7 @@ import FindingsSection from "./sections/FindingsSection";
 import ApplicationDetails from "./sections/ApplicationDetailsSection";
 import ApplicationAccessControl from "./sections/AccessControlSection";
 import LocationsSection from "./sections/LocationsSection";
+import View from "./View";
 
 interface ApplicationsSectionProps {
   application: Application;
@@ -509,33 +509,19 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <VersionSection application={application} />
 
         {application.pipelines && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <GitPullRequest className="mr-2 text-teal-600" size={20} />
-              Pipelines
-            </h3>
-            <div className="space-y-6">
-              <DynamicDataTable
-                columns={application.pipelines.columns}
-                rows={application.pipelines.rows}
-              />
-            </div>
-          </div>
+          <View
+            title="Pipelines"
+            icon={GitPullRequest}
+            view={application.pipelines}
+          />
         )}
 
         {application.deployments && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <Rocket className="mr-2 text-teal-600" size={20} />
-              Deployments
-            </h3>
-            <div className="space-y-6">
-              <DynamicDataTable
-                columns={application.deployments.columns}
-                rows={application.deployments.rows}
-              />
-            </div>
-          </div>
+          <View
+            title="Deployments"
+            icon={Rocket}
+            view={application.deployments}
+          />
         )}
 
         <LocationsSection locations={application.locations || []} />
