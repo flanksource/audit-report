@@ -221,7 +221,7 @@ export interface ViewResult {
 
 type SummaryResult = {
   name: string;
-  type: "piechart" | "number" | "text";
+  type: "piechart" | "number" | "text" | "breakdown";
   description?: string;
   rows: Record<string, any>[];
 };

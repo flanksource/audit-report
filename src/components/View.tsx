@@ -86,6 +86,8 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
     view.summaries?.filter((summary) => summary.type === "piechart") || [];
   const numberSummaries =
     view.summaries?.filter((summary) => summary.type === "number") || [];
+  const breakdownSummaries =
+    view.summaries?.filter((summary) => summary.type === "breakdown") || [];
 
   return (
     <div>
@@ -122,6 +124,40 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                 );
               })
             )}
+          </div>
+        )}
+
+        {breakdownSummaries.length > 0 && (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {breakdownSummaries.map((summary, index) => (
+              <div
+                key={index}
+                className="rounded-lg border border-gray-200 bg-gray-50 p-4"
+              >
+                <h4 className="mb-2 text-sm font-medium text-gray-600">
+                  {summary.name}
+                </h4>
+                <div className="space-y-2">
+                  {summary.rows.map((row, rowIndex) => {
+                    const { value, ...rest } = row;
+                    const labelKey = Object.keys(rest)[0];
+                    const labelValue = rest[labelKey];
+
+                    return (
+                      <div
+                        key={rowIndex}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium">
+                          {labelValue}
+                        </span>
+                        <span className="text-sm font-medium">{value}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
