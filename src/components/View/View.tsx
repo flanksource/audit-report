@@ -1,5 +1,5 @@
 import React from "react";
-import { LucideIcon } from "lucide-react";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
 import DynamicDataTable from "../DynamicDataTable";
 import { ViewResult } from "../../types";
 import {
@@ -13,7 +13,7 @@ import {
 
 interface ViewProps {
   title: string;
-  icon: LucideIcon;
+  icon: IconName;
   view: ViewResult;
 }
 
@@ -122,7 +122,7 @@ const generateGaugeData = (
   };
 };
 
-const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
+const View: React.FC<ViewProps> = ({ title, icon, view }) => {
   const pieChartSummaries =
     view.summaries?.filter((summary) => summary.type === "piechart") || [];
   const numberSummaries =
@@ -135,7 +135,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
   return (
     <div>
       <h3 className="mb-4 flex items-center text-xl font-semibold">
-        <Icon className="mr-2 text-teal-600" size={20} />
+        <DynamicIcon name={icon} className="mr-2 text-teal-600" size={20} />
         {title}
       </h3>
       <div className="space-y-6">

@@ -5,9 +5,7 @@ import {
   Box,
   GitCommit,
   AlertOctagon,
-  FileSearch,
-  GitPullRequest,
-  Rocket
+  FileSearch
 } from "lucide-react";
 import { formatDate } from "../utils";
 
@@ -508,21 +506,13 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <MonitoringSection application={application} />
         <VersionSection application={application} />
 
-        {application.pipelines && (
+        {application.sections?.map((section) => (
           <View
-            title="Pipelines"
-            icon={GitPullRequest}
-            view={application.pipelines}
+            title={section.title}
+            icon={section.icon}
+            view={section.result}
           />
-        )}
-
-        {application.deployments && (
-          <View
-            title="Deployments"
-            icon={Rocket}
-            view={application.deployments}
-          />
-        )}
+        ))}
 
         <LocationsSection locations={application.locations || []} />
       </div>

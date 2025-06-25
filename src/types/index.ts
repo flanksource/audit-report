@@ -137,17 +137,22 @@ export interface Application {
   backups?: Backup[];
   changes?: Change[];
   cost?: Cost;
-  deployments?: ViewResult;
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  pipelines?: ViewResult;
+  sections?: SectionResult[];
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;
 }
+
+type SectionResult = {
+  title: string;
+  icon: IconName;
+  result: ViewResult;
+};
 
 export interface User {
   id: string;
