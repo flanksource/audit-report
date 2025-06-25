@@ -137,12 +137,13 @@ export interface Application {
   backups?: Backup[];
   changes?: Change[];
   cost?: Cost;
+  deployments?: ViewResult;
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  pipelines?: Pipeline[];
+  pipelines?: ViewResult;
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;
@@ -203,3 +204,34 @@ export interface Restore {
   status: "completed" | "in-progress" | "failed";
   completedDate?: string;
 }
+
+export interface ViewColumnDef {
+  name: string;
+  type: "string" | "number" | "boolean" | "datetime" | "duration";
+  description?: string;
+}
+
+type ViewRow = any[];
+
+export interface ViewResult {
+  columns?: ViewColumnDef[];
+  rows?: ViewRow[];
+  summaries?: SummaryResult[];
+}
+
+export interface GaugeConfig {
+  min: number;
+  max: number;
+  thresholds?: {
+    value: number;
+    color: string;
+  }[];
+}
+
+type SummaryResult = {
+  name: string;
+  type: "piechart" | "number" | "text" | "breakdown" | "gauge";
+  description?: string;
+  rows: Record<string, any>[];
+  gauge?: GaugeConfig;
+};

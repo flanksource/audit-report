@@ -6,8 +6,8 @@ import {
   GitCommit,
   AlertOctagon,
   FileSearch,
-  Timer,
-  GitPullRequest
+  GitPullRequest,
+  Rocket
 } from "lucide-react";
 import { formatDate } from "../utils";
 
@@ -31,18 +31,12 @@ import FindingsSection from "./sections/FindingsSection";
 import ApplicationDetails from "./sections/ApplicationDetailsSection";
 import ApplicationAccessControl from "./sections/AccessControlSection";
 import LocationsSection from "./sections/LocationsSection";
+import View from "./View/View";
 
 interface ApplicationsSectionProps {
   application: Application;
   printView: boolean;
 }
-
-const PIPELINE_STATUS_COLORS = {
-  success: "bg-green-100 text-green-800",
-  failed: "bg-red-100 text-red-800",
-  running: "bg-blue-100 text-blue-800",
-  cancelled: "bg-gray-100 text-gray-800"
-};
 
 // const TYPE_COLORS = {
 //   security: "#ef4444", // red-500
@@ -159,31 +153,6 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
     const remainingHours = hours % 24;
     return `${days}d ${remainingHours}h`;
   };
-
-  const pipelineColumns = [
-    { header: "Name", accessor: "name" },
-    {
-      header: "Last Run",
-      accessor: "lastRun",
-      render: (value: string) => formatDate(value)
-    },
-    { header: "Last Run By", accessor: "lastRunBy" },
-    { header: "Git Tag", accessor: "gitTag" },
-    { header: "Repository", accessor: "repository" },
-    { header: "Environment", accessor: "environment" },
-    { header: "Duration", accessor: "duration" },
-    {
-      header: "Status",
-      accessor: "status",
-      render: (value: string) => (
-        <span
-          className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${PIPELINE_STATUS_COLORS[value as keyof typeof PIPELINE_STATUS_COLORS]}`}
-        >
-          <span className="capitalize">{value}</span>
-        </span>
-      )
-    }
-  ];
 
   const changeColumns = [
     { header: "Change ID", accessor: "id" },
@@ -538,91 +507,24 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
         <FindingsSection application={application} printView={printView} />
         <MonitoringSection application={application} />
         <VersionSection application={application} />
-        <LocationsSection locations={application.locations || []} />
 
         {application.pipelines && (
-          <div>
-            <h3 className="mb-4 flex items-center text-xl font-semibold">
-              <GitPullRequest className="mr-2 text-teal-600" size={20} />
-              Pipelines
-            </h3>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Pipeline Status
-                  </h4>
-                  <div className="space-y-2">
-                    {Object.entries(
-                      groupBy(application.pipelines, "status")
-                    ).map(([status, items]) => (
-                      <div
-                        key={status}
-                        className="flex items-center justify-between"
-                      >
-                        <span
-                          className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${PIPELINE_STATUS_COLORS[status as keyof typeof PIPELINE_STATUS_COLORS]}`}
-                        >
-                          <span className="capitalize">{status}</span>
-                        </span>
-                        <span className="text-sm font-medium">
-                          {items.length}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Latest Pipeline
-                  </h4>
-                  {application.pipelines[0] && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">
-                        {application.pipelines[0].name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {formatDate(application.pipelines[0].lastRun)}
-                      </p>
-                      <span
-                        className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${PIPELINE_STATUS_COLORS[application.pipelines[0].status]}`}
-                      >
-                        <span className="capitalize">
-                          {application.pipelines[0].status}
-                        </span>
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <h4 className="mb-2 text-sm font-medium text-gray-600">
-                    Average Duration
-                  </h4>
-                  <div className="flex items-center">
-                    <Timer className="mr-2 text-gray-400" size={16} />
-                    <p className="text-2xl font-semibold text-teal-600">
-                      {application.pipelines.reduce((acc, curr) => {
-                        const [min, sec] = curr.duration.split("m ");
-                        return (
-                          acc +
-                          parseInt(min) * 60 +
-                          parseInt(sec.replace("s", ""))
-                        );
-                      }, 0) /
-                        application.pipelines.length /
-                        60}
-                      m
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <DataTable
-                columns={pipelineColumns}
-                data={application.pipelines}
-              />
-            </div>
-          </div>
+          <View
+            title="Pipelines"
+            icon={GitPullRequest}
+            view={application.pipelines}
+          />
         )}
+
+        {application.deployments && (
+          <View
+            title="Deployments"
+            icon={Rocket}
+            view={application.deployments}
+          />
+        )}
+
+        <LocationsSection locations={application.locations || []} />
       </div>
     </div>
   );
