@@ -508,6 +508,7 @@ const ApplicationsSection: React.FC<ApplicationsSectionProps> = ({
 
         {application.sections?.map((section) => (
           <View
+            key={section.title}
             title={section.title}
             icon={section.icon}
             view={section.result}

@@ -176,9 +176,9 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
               })
             )}
 
-            {tableSummaries.map((summary, index) => (
+            {tableSummaries.map((summary) => (
               <div
-                key={index}
+                key={summary.name}
                 className="rounded-lg border border-gray-200 bg-gray-50 p-4"
               >
                 <h4 className="mb-2 text-sm font-medium text-gray-600">
