@@ -3,6 +3,8 @@ import { ViewColumnDef } from "../types";
 import { formatDate } from "../utils";
 import DataTable from "./DataTable";
 import { intervalToDuration } from "date-fns";
+import HealthBadge, { HealthType } from "./HealthBadge";
+import StatusBadge from "./StatusBadge";
 
 interface DynamicDataTableProps {
   columns: ViewColumnDef[];
@@ -54,6 +56,12 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
           return String(value);
         }
         return formatDuration(value);
+
+      case "health":
+        return <HealthBadge health={value as HealthType} />;
+
+      case "status":
+        return <StatusBadge status={String(value)} />;
 
       default:
         return String(value);

@@ -212,7 +212,14 @@ export interface Restore {
 
 export interface ViewColumnDef {
   name: string;
-  type: "string" | "number" | "boolean" | "datetime" | "duration";
+  type:
+    | "string"
+    | "number"
+    | "boolean"
+    | "datetime"
+    | "duration"
+    | "health"
+    | "status";
   description?: string;
 }
 

@@ -1,21 +1,7 @@
 import React from "react";
 
-type StatusType =
-  | "completed"
-  | "pending"
-  | "failed"
-  | "resolved"
-  | "investigating"
-  | "mitigated"
-  | "successful"
-  | "in-progress"
-  | "critical"
-  | "high"
-  | "medium"
-  | "low";
-
 interface StatusBadgeProps {
-  status: StatusType;
+  status: string;
   printView?: boolean;
 }
 
@@ -24,9 +10,11 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
   printView = false
 }) => {
   const getStatusColor = (
-    status: StatusType
+    status: string
   ): { bg: string; dot: string; text: string } => {
-    switch (status.toLowerCase()) {
+    const statusLower = status.toLowerCase();
+
+    switch (statusLower) {
       case "completed":
       case "resolved":
       case "successful":
@@ -80,6 +68,51 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
           text: "text-blue-700"
         };
       default:
+        // Heuristics for dynamic status values
+        if (
+          statusLower.includes("success") ||
+          statusLower.includes("complete") ||
+          statusLower.includes("pass") ||
+          statusLower.includes("ok")
+        ) {
+          return {
+            bg: "bg-green-100 text-green-800",
+            dot: "bg-green-600",
+            text: "text-green-700"
+          };
+        } else if (
+          statusLower.includes("error") ||
+          statusLower.includes("fail") ||
+          statusLower.includes("reject") ||
+          statusLower.includes("deny")
+        ) {
+          return {
+            bg: "bg-red-100 text-red-800",
+            dot: "bg-red-600",
+            text: "text-red-700"
+          };
+        } else if (
+          statusLower.includes("warn") ||
+          statusLower.includes("caution") ||
+          statusLower.includes("alert")
+        ) {
+          return {
+            bg: "bg-yellow-100 text-yellow-800",
+            dot: "bg-yellow-600",
+            text: "text-yellow-700"
+          };
+        } else if (
+          statusLower.includes("progress") ||
+          statusLower.includes("running") ||
+          statusLower.includes("active")
+        ) {
+          return {
+            bg: "bg-blue-100 text-blue-800",
+            dot: "bg-blue-600",
+            text: "text-blue-700"
+          };
+        }
+
         return {
           bg: "bg-gray-100 text-gray-800",
           dot: "bg-gray-600",
