@@ -18,36 +18,27 @@ interface ViewProps {
 }
 
 const COLOR_BANK = [
-  "#3b82f6", // blue-500
-  "#10b981", // emerald-500
-  "#f59e0b", // amber-500
-  "#ef4444", // red-500
-  "#8b5cf6", // purple-500
-  "#06b6d4", // cyan-500
-  "#84cc16", // lime-500
-  "#f97316", // orange-500
-  "#ec4899", // pink-500
-  "#6366f1", // indigo-500
-  "#14b8a6", // teal-500
-  "#f43f5e", // rose-500
-  "#a855f7", // violet-500
-  "#22c55e", // green-500
-  "#eab308", // yellow-500
-  "#64748b", // slate-500
-  "#78716c", // stone-500
-  "#dc2626", // red-600
-  "#2563eb", // blue-600
-  "#059669" // emerald-600
+  "#4F83EF", // bright but balanced blue
+  "#28C19B", // turquoise / emerald
+  "#F4B23C", // golden amber
+  "#F25C54", // vivid coral
+  "#9A7DFF", // lavender-violet
+  "#21B3D8", // clear cyan
+  "#8BC34A", // fresh lime-green
+  "#FF8C42", // warm orange
+  "#E8589C", // lively pink
+  "#5965F2", // indigo-blue
+  "#1FB3A3", // teal sea-foam
+  "#F04E6E", // rose red
+  "#B678FA", // soft-vibrant violet
+  "#39C76E", // spring green
+  "#E5C844", // mellow yellow-gold
+  "#7F8FA6", // steel grey (neutral anchor)
+  "#8E7C70", // warm stone (earthy neutral)
+  "#D63A3A", // bold brick-red
+  "#2E6FF7", // saturated sky-blue
+  "#0A9C72" // deep emerald
 ];
-
-const shuffleArray = (array: string[]) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
 
 const generatePieChartData = (rows: Record<string, any>[]) => {
   return rows.map((row) => {
@@ -225,8 +216,6 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
 
             {pieChartSummaries.map((summary, index) => {
               const chartData = generatePieChartData(summary.rows);
-              const shuffledColors = shuffleArray(COLOR_BANK);
-
               return (
                 <div
                   key={index}
@@ -258,9 +247,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                               key={`cell-${entryIndex}`}
                               fill={
                                 summary.piechart?.colors?.[entry.name] ||
-                                shuffledColors[
-                                  entryIndex % shuffledColors.length
-                                ]
+                                COLOR_BANK[entryIndex % COLOR_BANK.length]
                               }
                             />
                           ))}
