@@ -15,14 +15,6 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
     const statusLower = status.toLowerCase();
 
     switch (statusLower) {
-      case "completed":
-      case "resolved":
-      case "successful":
-        return {
-          bg: "bg-green-100 text-green-800",
-          dot: "bg-green-600",
-          text: "text-green-700"
-        };
       case "pending":
       case "in-progress":
       case "mitigated":
@@ -30,12 +22,6 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
           bg: "bg-blue-100 text-blue-800",
           dot: "bg-blue-600",
           text: "text-blue-700"
-        };
-      case "failed":
-        return {
-          bg: "bg-red-100 text-red-800",
-          dot: "bg-red-600",
-          text: "text-red-700"
         };
       case "investigating":
         return {
@@ -71,6 +57,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
         // Heuristics for dynamic status values
         if (
           statusLower.includes("success") ||
+          statusLower.includes("succeed") ||
+          statusLower.includes("resolved") ||
           statusLower.includes("complete") ||
           statusLower.includes("pass") ||
           statusLower.includes("ok")

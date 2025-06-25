@@ -145,7 +145,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
           gaugeSummaries.length > 0) && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {numberSummaries.flatMap((summary) =>
-              summary.rows.map((row, rowIndex) => {
+              summary.rows?.map((row, rowIndex) => {
                 const { value } = row;
 
                 return (
@@ -185,7 +185,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
                   {summary.name}
                 </h4>
                 <div className="space-y-2">
-                  {summary.rows.map((row, rowIndex) => {
+                  {summary.rows?.map((row, rowIndex) => {
                     const { value, ...rest } = row;
                     const labelKey = Object.keys(rest)[0];
                     const labelValue = rest[labelKey];
@@ -207,7 +207,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
             ))}
 
             {pieChartSummaries.map((summary, index) => {
-              const chartData = generatePieChartData(summary.rows);
+              const chartData = generatePieChartData(summary.rows || []);
               return (
                 <div
                   key={index}
@@ -255,7 +255,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
 
             {gaugeSummaries.flatMap((summary, summaryIndex) =>
               summary.rows
-                .map((row, rowIndex) => {
+                ?.map((row, rowIndex) => {
                   if (!summary.gauge) return null;
 
                   const gaugeData = generateGaugeData(row, summary.gauge);

@@ -244,7 +244,7 @@ type PanelResult = {
   name: string;
   type: "piechart" | "number" | "text" | "table" | "gauge";
   description?: string;
-  rows: Record<string, any>[];
+  rows?: Record<string, any>[];
   gauge?: GaugeConfig;
   number?: NumberConfig;
   piechart?: PiechartConfig;
