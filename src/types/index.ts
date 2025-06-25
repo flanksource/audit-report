@@ -234,4 +234,10 @@ type SummaryResult = {
   description?: string;
   rows: Record<string, any>[];
   gauge?: GaugeConfig;
+  number?: NumberConfig;
+};
+
+type NumberConfig = {
+  unit: string;
+  precision: number;
 };

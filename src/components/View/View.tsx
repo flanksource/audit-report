@@ -173,7 +173,20 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                       </p>
                     )}
                     <p className="text-2xl font-semibold text-teal-600">
-                      {value}
+                      {summary.number
+                        ? !isNaN(Number(value))
+                          ? Number(value).toFixed(
+                              typeof summary.number.precision === "number"
+                                ? summary.number.precision
+                                : 0
+                            )
+                          : value
+                        : value}
+                      {summary.number?.unit && (
+                        <span className="ml-1 text-lg font-normal text-gray-500">
+                          {summary.number.unit}
+                        </span>
+                      )}
                     </p>
                   </div>
                 );
