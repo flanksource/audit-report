@@ -124,13 +124,13 @@ const generateGaugeData = (
 
 const View: React.FC<ViewProps> = ({ title, icon, view }) => {
   const pieChartSummaries =
-    view.summaries?.filter((summary) => summary.type === "piechart") || [];
+    view.panels?.filter((summary) => summary.type === "piechart") || [];
   const numberSummaries =
-    view.summaries?.filter((summary) => summary.type === "number") || [];
-  const breakdownSummaries =
-    view.summaries?.filter((summary) => summary.type === "breakdown") || [];
+    view.panels?.filter((summary) => summary.type === "number") || [];
+  const tableSummaries =
+    view.panels?.filter((summary) => summary.type === "table") || [];
   const gaugeSummaries =
-    view.summaries?.filter((summary) => summary.type === "gauge") || [];
+    view.panels?.filter((summary) => summary.type === "gauge") || [];
 
   return (
     <div>
@@ -140,7 +140,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
       </h3>
       <div className="space-y-6">
         {(numberSummaries.length > 0 ||
-          breakdownSummaries.length > 0 ||
+          tableSummaries.length > 0 ||
           pieChartSummaries.length > 0 ||
           gaugeSummaries.length > 0) && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -176,7 +176,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
               })
             )}
 
-            {breakdownSummaries.map((summary, index) => (
+            {tableSummaries.map((summary, index) => (
               <div
                 key={index}
                 className="rounded-lg border border-gray-200 bg-gray-50 p-4"

@@ -142,13 +142,13 @@ export interface Application {
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  sections?: SectionResult[];
+  sections?: ViewSection[];
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;
 }
 
-type SectionResult = {
+type ViewSection = {
   title: string;
   icon: IconName;
   result: ViewResult;
@@ -221,7 +221,7 @@ type ViewRow = any[];
 export interface ViewResult {
   columns?: ViewColumnDef[];
   rows?: ViewRow[];
-  summaries?: SummaryResult[];
+  panels?: PanelResult[];
 }
 
 export interface GaugeConfig {
@@ -233,9 +233,9 @@ export interface GaugeConfig {
   }[];
 }
 
-type SummaryResult = {
+type PanelResult = {
   name: string;
-  type: "piechart" | "number" | "text" | "breakdown" | "gauge";
+  type: "piechart" | "number" | "text" | "table" | "gauge";
   description?: string;
   rows: Record<string, any>[];
   gauge?: GaugeConfig;
