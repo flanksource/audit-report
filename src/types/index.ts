@@ -235,9 +235,15 @@ type SummaryResult = {
   rows: Record<string, any>[];
   gauge?: GaugeConfig;
   number?: NumberConfig;
+  piechart?: PiechartConfig;
 };
 
 type NumberConfig = {
   unit: string;
   precision: number;
+};
+
+type PiechartConfig = {
+  showLabels?: boolean;
+  colors?: Record<string, string>;
 };

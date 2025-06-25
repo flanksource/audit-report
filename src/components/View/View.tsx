@@ -247,12 +247,17 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                           data={chartData}
                           dataKey="value"
                           nameKey="name"
-                          label={{ fontSize: 10, fill: "#374151" }}
+                          label={
+                            summary.piechart?.showLabels === true
+                              ? (entry: any) => entry.value
+                              : false
+                          }
                         >
-                          {chartData.map((_, entryIndex) => (
+                          {chartData.map((entry, entryIndex) => (
                             <Cell
                               key={`cell-${entryIndex}`}
                               fill={
+                                summary.piechart?.colors?.[entry.name] ||
                                 shuffledColors[
                                   entryIndex % shuffledColors.length
                                 ]
