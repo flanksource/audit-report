@@ -31,7 +31,7 @@ import FindingsSection from "./sections/FindingsSection";
 import ApplicationDetails from "./sections/ApplicationDetailsSection";
 import ApplicationAccessControl from "./sections/AccessControlSection";
 import LocationsSection from "./sections/LocationsSection";
-import View from "./View";
+import View from "./View/View";
 
 interface ApplicationsSectionProps {
   application: Application;

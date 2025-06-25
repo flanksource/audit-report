@@ -219,9 +219,19 @@ export interface ViewResult {
   summaries?: SummaryResult[];
 }
 
+export interface GaugeConfig {
+  min: number;
+  max: number;
+  thresholds?: {
+    value: number;
+    color: string;
+  }[];
+}
+
 type SummaryResult = {
   name: string;
-  type: "piechart" | "number" | "text" | "breakdown";
+  type: "piechart" | "number" | "text" | "breakdown" | "gauge";
   description?: string;
   rows: Record<string, any>[];
+  gauge?: GaugeConfig;
 };
