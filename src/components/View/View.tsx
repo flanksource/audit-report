@@ -146,9 +146,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {numberSummaries.flatMap((summary) =>
               summary.rows.map((row, rowIndex) => {
-                const { value, ...rest } = row;
-                const labelKey = Object.keys(rest)[0];
-                const labelValue = rest[labelKey];
+                const { value } = row;
 
                 return (
                   <div
@@ -156,7 +154,7 @@ const View: React.FC<ViewProps> = ({ title, icon, view }) => {
                     className="rounded-lg border border-gray-200 bg-gray-50 p-4"
                   >
                     <h4 className="mb-2 text-sm font-medium capitalize text-gray-600">
-                      {labelValue}
+                      {summary.name}
                     </h4>
                     {summary.description && (
                       <p className="mb-3 text-xs text-gray-500">
