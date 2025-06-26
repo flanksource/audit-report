@@ -137,17 +137,22 @@ export interface Application {
   backups?: Backup[];
   changes?: Change[];
   cost?: Cost;
-  deployments?: ViewResult;
   findings?: Finding[];
   incidents?: Incident[];
   lifecycle?: string;
   locations?: Location[];
   monitoring?: MonitoringMetrics;
-  pipelines?: ViewResult;
+  sections?: ViewSection[];
   repositories?: Repository[];
   restores?: Restore[];
   version?: Version;
 }
+
+type ViewSection = {
+  title: string;
+  icon: IconName;
+  result: ViewResult;
+};
 
 export interface User {
   id: string;
@@ -207,7 +212,14 @@ export interface Restore {
 
 export interface ViewColumnDef {
   name: string;
-  type: "string" | "number" | "boolean" | "datetime" | "duration";
+  type:
+    | "string"
+    | "number"
+    | "boolean"
+    | "datetime"
+    | "duration"
+    | "health"
+    | "status";
   description?: string;
 }
 
@@ -216,7 +228,7 @@ type ViewRow = any[];
 export interface ViewResult {
   columns?: ViewColumnDef[];
   rows?: ViewRow[];
-  summaries?: SummaryResult[];
+  panels?: PanelResult[];
 }
 
 export interface GaugeConfig {
@@ -228,11 +240,11 @@ export interface GaugeConfig {
   }[];
 }
 
-type SummaryResult = {
+type PanelResult = {
   name: string;
-  type: "piechart" | "number" | "text" | "breakdown" | "gauge";
+  type: "piechart" | "number" | "text" | "table" | "gauge";
   description?: string;
-  rows: Record<string, any>[];
+  rows?: Record<string, any>[];
   gauge?: GaugeConfig;
   number?: NumberConfig;
   piechart?: PiechartConfig;

@@ -335,133 +335,232 @@
       "status": "failed"
     }
   ],
-  "deployments": {
-    "columns": [
-      {
-        "name": "application",
-        "type": "string",
-        "description": "The application name."
-      },
-      {
-        "name": "namespace",
-        "type": "string",
-        "description": "The namespace name."
-      },
-      {
-        "name": "chart",
-        "type": "string",
-        "description": "The chart name."
-      },
-      {
-        "name": "version",
-        "type": "string",
-        "description": "The version of the deployment."
-      },
-      {
-        "name": "status",
-        "type": "string",
-        "description": "The status of the deployment."
-      },
-      {
-        "name": "health",
-        "type": "string",
-        "description": "The health of the deployment."
-      },
-      {
-        "name": "lastUpdated",
-        "type": "datetime",
-        "description": "The last updated time."
+  "sections": [
+    {
+      "title": "Deployments",
+      "icon": "git-pull-request-arrow",
+      "result": {
+        "columns": [
+          {
+            "name": "application",
+            "type": "string",
+            "description": "The application name."
+          },
+          {
+            "name": "namespace",
+            "type": "string",
+            "description": "The namespace name."
+          },
+          {
+            "name": "chart",
+            "type": "string",
+            "description": "The chart name."
+          },
+          {
+            "name": "version",
+            "type": "string",
+            "description": "The version of the deployment."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "description": "The status of the deployment."
+          },
+          {
+            "name": "health",
+            "type": "string",
+            "description": "The health of the deployment."
+          },
+          {
+            "name": "lastUpdated",
+            "type": "datetime",
+            "description": "The last updated time."
+          }
+        ],
+        "rows": [
+          [
+            "alertmanager",
+            "monitoring",
+            "app-template",
+            "4.0.1",
+            "InstallSucceeded",
+            "healthy",
+            "2025-06-20T11:37:50.248793+05:45"
+          ],
+          [
+            "alloy",
+            "monitoring",
+            "alloy",
+            "1.0.2",
+            "UpgradeSucceeded",
+            "healthy",
+            "2025-06-20T11:37:50.248793+05:45"
+          ],
+          [
+            "grafana",
+            "monitoring",
+            "grafana",
+            "9.0.0",
+            "UpgradeSucceeded",
+            "healthy",
+            "2025-06-20T11:37:50.248793+05:45"
+          ],
+          [
+            "kube-prometheus-stack",
+            "monitoring",
+            "kube-prometheus-stack",
+            "72.1.0",
+            "UpgradeSucceeded",
+            "healthy",
+            "2025-06-20T11:37:50.248793+05:45"
+          ]
+        ],
+        "panels": [
+          {
+            "name": "Health",
+            "description": "Deployments grouped by health",
+            "type": "piechart",
+            "piechart": {
+              "showLabels": true,
+              "colors": {
+                "healthy": "#28C19B",
+                "unhealthy": "#F04E6E"
+              }
+            },
+            "rows": [
+              {
+                "count": 20,
+                "health": "healthy"
+              },
+              {
+                "count": 4,
+                "health": "unhealthy"
+              }
+            ]
+          },
+          {
+            "name": "Status",
+            "description": "Deployments grouped by status",
+            "type": "piechart",
+            "piechart": {
+              "colors": {
+                "InstallSucceeded": "#28C19B",
+                "UpgradeSucceeded": "#5965F2"
+              }
+            },
+            "rows": [
+              {
+                "count": 1,
+                "status": "InstallSucceeded"
+              },
+              {
+                "count": 3,
+                "status": "UpgradeSucceeded"
+              }
+            ]
+          }
+        ]
       }
-    ],
-    "rows": [
-      [
-        "alertmanager",
-        "monitoring",
-        "app-template",
-        "4.0.1",
-        "InstallSucceeded",
-        "healthy",
-        "2025-06-20T11:37:50.248793+05:45"
-      ],
-      [
-        "alloy",
-        "monitoring",
-        "alloy",
-        "1.0.2",
-        "UpgradeSucceeded",
-        "healthy",
-        "2025-06-20T11:37:50.248793+05:45"
-      ],
-      [
-        "grafana",
-        "monitoring",
-        "grafana",
-        "9.0.0",
-        "UpgradeSucceeded",
-        "healthy",
-        "2025-06-20T11:37:50.248793+05:45"
-      ],
-      [
-        "kube-prometheus-stack",
-        "monitoring",
-        "kube-prometheus-stack",
-        "72.1.0",
-        "UpgradeSucceeded",
-        "healthy",
-        "2025-06-20T11:37:50.248793+05:45"
-      ]
-    ]
-  },
-  "pipelines": {
-    "columns": [
-      {
-        "name": "name",
-        "type": "string",
-        "description": "The name of the pipeline."
-      },
-      {
-        "name": "lastRun",
-        "type": "datetime",
-        "description": "The namespace name."
-      },
-      {
-        "name": "lastRunBy",
-        "type": "string",
-        "description": "The chart name."
-      },
-      {
-        "name": "repository",
-        "type": "string",
-        "description": "The repository of the pipeline."
-      },
-      {
-        "name": "status",
-        "type": "string",
-        "description": "The status of the pipeline."
+    },
+    {
+      "title": "Pipelines",
+      "icon": "rocket",
+      "result": {
+        "columns": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The name of the pipeline."
+          },
+          {
+            "name": "repository",
+            "type": "string",
+            "description": "The repository of the pipeline."
+          },
+          {
+            "name": "lastRun",
+            "type": "datetime",
+            "description": "The last run time."
+          },
+          {
+            "name": "lastRunBy",
+            "type": "string",
+            "description": "The user who ran the pipeline."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "description": "The status of the pipeline."
+          }
+        ],
+        "rows": [
+          [
+            "Create Release",
+            "flanksource/duty",
+            "2025-03-26T13:30:38Z",
+            "moshloop",
+            "success"
+          ],
+          [
+            "Create Release",
+            "flanksource/mission-control",
+            "2025-04-29T12:04:11Z",
+            "moshloop",
+            "success"
+          ],
+          [
+            "Create Release",
+            "flanksource/canary-checker",
+            "2025-04-04T09:05:56Z",
+            "flankbot",
+            "success"
+          ]
+        ],
+        "panels": [
+          {
+            "name": "Pipeline Status",
+            "type": "table",
+            "rows": [
+              {
+                "status": "Success",
+                "value": 10
+              },
+              {
+                "status": "Running",
+                "value": 1
+              },
+              {
+                "status": "Failed",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "name": "Latest Pipeline",
+            "description": "SAP ERP Core Build",
+            "type": "text",
+            "rows": [
+              {
+                "name": "SAP ERP Core Build",
+                "time": "about 1 year ago",
+                "status": "Success"
+              }
+            ]
+          },
+          {
+            "name": "Average Duration",
+            "type": "number",
+            "number": {
+              "unit": "minutes"
+            },
+            "rows": [
+              {
+                "value": 12.1666666
+              }
+            ]
+          }
+        ]
       }
-    ],
-    "rows": [
-      [
-        "Create Release",
-        "2025-03-26T13:30:38Z",
-        "moshloop",
-        "flanksource/duty",
-        "success"
-      ],
-      [
-        "Create Release",
-        "2025-04-29T12:04:11Z",
-        "moshloop",
-        "flanksource/mission-control",
-        "success"
-      ],
-      [
-        "Create Release",
-        "2025-04-04T09:05:56Z",
-        "flankbot",
-        "flanksource/canary-checker",
-        "success"
-      ]
-    ]
-  }
+    }
+  ]
 }

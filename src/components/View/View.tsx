@@ -1,5 +1,5 @@
 import React from "react";
-import { LucideIcon } from "lucide-react";
+import { DynamicIcon, IconName } from "lucide-react/dynamic";
 import DynamicDataTable from "../DynamicDataTable";
 import { ViewResult } from "../../types";
 import {
@@ -13,7 +13,7 @@ import {
 
 interface ViewProps {
   title: string;
-  icon: LucideIcon;
+  icon: IconName;
   view: ViewResult;
 }
 
@@ -122,33 +122,31 @@ const generateGaugeData = (
   };
 };
 
-const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
+const View: React.FC<ViewProps> = ({ title, icon, view }) => {
   const pieChartSummaries =
-    view.summaries?.filter((summary) => summary.type === "piechart") || [];
+    view.panels?.filter((summary) => summary.type === "piechart") || [];
   const numberSummaries =
-    view.summaries?.filter((summary) => summary.type === "number") || [];
-  const breakdownSummaries =
-    view.summaries?.filter((summary) => summary.type === "breakdown") || [];
+    view.panels?.filter((summary) => summary.type === "number") || [];
+  const tableSummaries =
+    view.panels?.filter((summary) => summary.type === "table") || [];
   const gaugeSummaries =
-    view.summaries?.filter((summary) => summary.type === "gauge") || [];
+    view.panels?.filter((summary) => summary.type === "gauge") || [];
 
   return (
     <div>
       <h3 className="mb-4 flex items-center text-xl font-semibold">
-        <Icon className="mr-2 text-teal-600" size={20} />
+        <DynamicIcon name={icon} className="mr-2 text-teal-600" size={20} />
         {title}
       </h3>
       <div className="space-y-6">
         {(numberSummaries.length > 0 ||
-          breakdownSummaries.length > 0 ||
+          tableSummaries.length > 0 ||
           pieChartSummaries.length > 0 ||
           gaugeSummaries.length > 0) && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {numberSummaries.flatMap((summary) =>
-              summary.rows.map((row, rowIndex) => {
-                const { value, ...rest } = row;
-                const labelKey = Object.keys(rest)[0];
-                const labelValue = rest[labelKey];
+              summary.rows?.map((row, rowIndex) => {
+                const { value } = row;
 
                 return (
                   <div
@@ -156,7 +154,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
                     className="rounded-lg border border-gray-200 bg-gray-50 p-4"
                   >
                     <h4 className="mb-2 text-sm font-medium capitalize text-gray-600">
-                      {labelValue}
+                      {summary.name}
                     </h4>
                     {summary.description && (
                       <p className="mb-3 text-xs text-gray-500">
@@ -178,16 +176,16 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
               })
             )}
 
-            {breakdownSummaries.map((summary, index) => (
+            {tableSummaries.map((summary) => (
               <div
-                key={index}
+                key={summary.name}
                 className="rounded-lg border border-gray-200 bg-gray-50 p-4"
               >
                 <h4 className="mb-2 text-sm font-medium text-gray-600">
                   {summary.name}
                 </h4>
                 <div className="space-y-2">
-                  {summary.rows.map((row, rowIndex) => {
+                  {summary.rows?.map((row, rowIndex) => {
                     const { value, ...rest } = row;
                     const labelKey = Object.keys(rest)[0];
                     const labelValue = rest[labelKey];
@@ -209,7 +207,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
             ))}
 
             {pieChartSummaries.map((summary, index) => {
-              const chartData = generatePieChartData(summary.rows);
+              const chartData = generatePieChartData(summary.rows || []);
               return (
                 <div
                   key={index}
@@ -257,7 +255,7 @@ const View: React.FC<ViewProps> = ({ title, icon: Icon, view }) => {
 
             {gaugeSummaries.flatMap((summary, summaryIndex) =>
               summary.rows
-                .map((row, rowIndex) => {
+                ?.map((row, rowIndex) => {
                   if (!summary.gauge) return null;
 
                   const gaugeData = generateGaugeData(row, summary.gauge);

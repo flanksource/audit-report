@@ -2,7 +2,9 @@ import React from "react";
 import { ViewColumnDef } from "../types";
 import { formatDate } from "../utils";
 import DataTable from "./DataTable";
-import { formatDuration, intervalToDuration } from "date-fns";
+import { intervalToDuration } from "date-fns";
+import HealthBadge, { HealthType } from "./HealthBadge";
+import StatusBadge from "./StatusBadge";
 
 interface DynamicDataTableProps {
   columns: ViewColumnDef[];
@@ -40,25 +42,27 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
           return formatDate(value);
         }
         return String(value);
+
       case "boolean":
         return value ? "Yes" : "No";
+
       case "number":
         return typeof value === "number"
           ? value.toLocaleString()
           : String(value);
-      case "duration": {
+
+      case "duration":
         if (typeof value !== "number") {
           return String(value);
         }
-        // value is in nanoseconds, intervalToDuration expects milliseconds.
-        const duration = intervalToDuration({
-          start: 0,
-          end: value / 1_000_000
-        });
-        const formatted = formatDuration(duration);
-        return formatted || "0s";
-      }
-      case "string":
+        return formatDuration(value);
+
+      case "health":
+        return <HealthBadge health={value as HealthType} />;
+
+      case "status":
+        return <StatusBadge status={String(value)} />;
+
       default:
         return String(value);
     }
@@ -70,3 +74,22 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
 };
 
 export default DynamicDataTable;
+
+const formatDuration = (nanoseconds: number): string => {
+  const duration = intervalToDuration({
+    start: 0,
+    end: nanoseconds / 1_000_000
+  });
+
+  const parts = [];
+  if (duration.years) parts.push(`${duration.years}y`);
+  if (duration.months) parts.push(`${duration.months}mo`);
+  if (duration.weeks) parts.push(`${duration.weeks}w`);
+  if (duration.days) parts.push(`${duration.days}d`);
+  if (duration.hours) parts.push(`${duration.hours}h`);
+  if (duration.minutes) parts.push(`${duration.minutes}m`);
+  if (duration.seconds) parts.push(`${duration.seconds}s`);
+
+  // NOTE: just take the first 2 parts. The rest are insignificant.
+  return parts.length > 0 ? parts.slice(0, 2).join(" ") : "0s";
+};
