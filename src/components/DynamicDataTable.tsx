@@ -5,6 +5,7 @@ import DataTable from "./DataTable";
 import { intervalToDuration } from "date-fns";
 import HealthBadge, { HealthType } from "./HealthBadge";
 import StatusBadge from "./StatusBadge";
+import GaugeCell from "./GaugeCell";
 
 interface DynamicDataTableProps {
   columns: ViewColumnDef[];
@@ -62,6 +63,12 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
 
       case "status":
         return <StatusBadge status={String(value)} />;
+
+      case "gauge":
+        if (!column.gauge) {
+          return String(value);
+        }
+        return <GaugeCell value={Number(value)} gauge={column.gauge} />;
 
       default:
         return String(value);

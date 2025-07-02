@@ -219,8 +219,10 @@ export interface ViewColumnDef {
     | "datetime"
     | "duration"
     | "health"
-    | "status";
+    | "status"
+    | "gauge";
   description?: string;
+  gauge?: GaugeConfig;
 }
 
 type ViewRow = any[];
