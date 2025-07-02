@@ -15,6 +15,9 @@ const GaugePanel: React.FC<GaugePanelProps> = ({ summary }) => {
 
           const gaugeData = generateGaugeData(row, summary.gauge);
           const outerArcLength = 204; // π * 65 for outer threshold arc
+          const sortedThresholds = summary.gauge.thresholds
+            ? [...summary.gauge.thresholds].sort((a, b) => a.value - b.value)
+            : [];
 
           return (
             <div
@@ -48,10 +51,7 @@ const GaugePanel: React.FC<GaugePanelProps> = ({ summary }) => {
                   {/* Outer arc - Threshold segments */}
                   {summary.gauge &&
                     summary.gauge.thresholds &&
-                    summary.gauge.thresholds.map((_, thresholdIndex) => {
-                      const sortedThresholds = [
-                        ...summary.gauge!.thresholds!
-                      ].sort((a, b) => a.value - b.value);
+                    sortedThresholds.map((_, thresholdIndex) => {
                       const currentThreshold = sortedThresholds[thresholdIndex];
                       const nextThreshold =
                         sortedThresholds[thresholdIndex + 1];

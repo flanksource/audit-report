@@ -68,7 +68,10 @@ export const generateGaugeData = (
   }
 ) => {
   const value = row.value || 0;
-  const percentage = ((value - gauge.min) / (gauge.max - gauge.min)) * 100;
+  let percentage = 0;
+  if (gauge.max !== gauge.min) {
+    percentage = ((value - gauge.min) / (gauge.max - gauge.min)) * 100;
+  }
   const clampedPercentage = Math.max(0, Math.min(100, percentage));
 
   const color = gauge.thresholds
