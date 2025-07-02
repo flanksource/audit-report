@@ -240,7 +240,7 @@ export interface GaugeConfig {
   }[];
 }
 
-type PanelResult = {
+export type PanelResult = {
   name: string;
   type: "piechart" | "number" | "text" | "table" | "gauge";
   description?: string;
