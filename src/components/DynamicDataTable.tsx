@@ -68,7 +68,7 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({
         if (!column.gauge) {
           return String(value);
         }
-        return <GaugeCell value={Number(value)} gauge={column.gauge} />;
+        return <GaugeCell value={value} gauge={column.gauge} />;
 
       default:
         return String(value);

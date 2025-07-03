@@ -3,12 +3,18 @@ import { GaugeConfig } from "../types";
 import { generateGaugeData } from "./View/panels/utils";
 
 interface GaugeCellProps {
-  value: number;
-  gauge: GaugeConfig;
+  value: number | { min: number; max: number; value: number };
+  gauge?: GaugeConfig;
 }
 
 const GaugeCell: React.FC<GaugeCellProps> = ({ value, gauge }) => {
-  const gaugeData = generateGaugeData({ value }, gauge);
+  const gaugeValue = typeof value === "number" ? value : value.value;
+  const gaugeConfig =
+    typeof value === "number"
+      ? gauge
+      : { ...gauge, min: value.min, max: value.max };
+
+  const gaugeData = generateGaugeData({ value: gaugeValue }, gaugeConfig);
   const percentage = gaugeData.value;
   const color = gaugeData.color;
 
@@ -27,7 +33,7 @@ const GaugeCell: React.FC<GaugeCellProps> = ({ value, gauge }) => {
         </div>
         {/* Value text */}
         <span className="min-w-fit text-xs font-medium text-gray-700">
-          {value}
+          {gaugeValue} {gaugeConfig?.unit}
         </span>
       </div>
     </div>

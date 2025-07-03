@@ -236,6 +236,7 @@ export interface ViewResult {
 export interface GaugeConfig {
   min: number;
   max: number;
+  unit?: string;
   thresholds?: {
     value: number;
     color: string;
