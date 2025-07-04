@@ -1,3 +1,5 @@
+import { GaugeConfig } from "../../../types";
+
 export const COLOR_BANK = [
   "#4F83EF", // bright but balanced blue
   "#28C19B", // turquoise / emerald
@@ -61,20 +63,16 @@ export const getGaugeColor = (
 
 export const generateGaugeData = (
   row: Record<string, any>,
-  gauge: {
-    min: number;
-    max: number;
-    thresholds?: Array<{ value: number; color: string }>;
-  }
+  gauge?: GaugeConfig
 ) => {
   const value = row.value || 0;
   let percentage = 0;
-  if (gauge.max !== gauge.min) {
+  if (gauge && gauge.max !== gauge.min) {
     percentage = ((value - gauge.min) / (gauge.max - gauge.min)) * 100;
   }
   const clampedPercentage = Math.max(0, Math.min(100, percentage));
 
-  const color = gauge.thresholds
+  const color = gauge?.thresholds
     ? getGaugeColor(value, gauge.thresholds)
     : COLOR_BANK[0];
 
@@ -82,8 +80,8 @@ export const generateGaugeData = (
     value: clampedPercentage,
     originalValue: value,
     color: color,
-    max: gauge.max,
-    min: gauge.min,
+    max: gauge?.max,
+    min: gauge?.min,
     label: row.health || row.type || "Value"
   };
 };

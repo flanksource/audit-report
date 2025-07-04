@@ -219,8 +219,10 @@ export interface ViewColumnDef {
     | "datetime"
     | "duration"
     | "health"
-    | "status";
+    | "status"
+    | "gauge";
   description?: string;
+  gauge?: GaugeConfig;
 }
 
 type ViewRow = any[];
@@ -234,6 +236,7 @@ export interface ViewResult {
 export interface GaugeConfig {
   min: number;
   max: number;
+  unit?: string;
   thresholds?: {
     value: number;
     color: string;
