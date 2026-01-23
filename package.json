@@ -14,7 +14,7 @@
     "@flanksource/icons": "^1.0.33",
     "date-fns": "^3.3.1",
     "html2pdf.js": "^0.10.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "lucide-react": "^0.511.0",
     "react": "^18.3.1",
     "react-calendar-heatmap": "^1.10.0",
